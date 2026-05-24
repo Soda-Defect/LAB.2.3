@@ -14,6 +14,12 @@ enum class MatrixType {
 };
 
 template<typename T>
+struct IsComplex : std::false_type {};
+
+template<typename T>
+struct IsComplex<std::complex<T>> : std::true_type {};
+
+template<typename T>
 class TriangleMatrix {
 private:
     DynamicArray<T> data;     
@@ -52,12 +58,7 @@ public:
     double normL2() const;      // Евклидова норма (Frobenius norm)
     double normInf() const;      // (максимум суммы по строкам) 
     
-    void print() const;
     bool isSquare() const { return n > 0; }
-    
-    static TriangleMatrix<T> identity(int size);
-    static TriangleMatrix<T> zeros(int size, MatrixType t = MatrixType::Upper);
-    static TriangleMatrix<T> ones(int size, MatrixType t = MatrixType::Upper);
 };
 
 template<typename T>
@@ -208,5 +209,40 @@ double TriangleMatrix<T>::normL1() const {
     return maxSum;
 }
 
+template<typename T>
+double TriangleMatrix<T>::normL2() const {
+    double sumSquares = 0.0;
+    for (int k = 0; k < data.GetSize(); k++) {
+        const T& val = data.Get(k);
+        double absVal;
+        if constexpr (IsComplex<T>::value) {
+            absVal = std::abs(val);
+        } else {
+            absVal = std::abs(static_cast<double>(val));
+        }
+        sumSquares += absVal * absVal;
+    }
+    return std::sqrt(sumSquares);
+}
+
+template<typename T>
+double TriangleMatrix<T>::normInf() const {
+    double maxSum = 0.0;
+    for (int i = 0; i < n; i++) {
+        double rowSum = 0.0;
+        for (int j = 0; j < n; j++) {
+            T val = get(i, j);
+            if constexpr (IsComplex<T>::value) {
+                rowSum += std::abs(val);
+            } else {
+                rowSum += std::abs(static_cast<double>(val));
+            }
+        }
+        if (rowSum > maxSum){
+            maxSum = rowSum;
+        }
+    }
+    return maxSum;
+}
 
 #endif 

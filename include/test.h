@@ -55,6 +55,11 @@ private:
     void testZipUnzipString();
     
     void testMapUtils();
+
+    void testTriangleMatrixInt();
+    void testTriangleMatrixDouble();
+    void testTriangleMatrixComplex();
+    void testTriangleMatrixOperations();
 };
 
 #endif 
