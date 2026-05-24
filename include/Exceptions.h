@@ -30,4 +30,17 @@ private:
     std::string msg_;
 };
 
+class TypeException : public std::exception {
+public:
+    TypeException(const std::string &message) : msg_(message) {
+    }
+
+    const char *what() const throw() {
+        return msg_.c_str();
+    }
+
+private:
+    std::string msg_;
+};
+
 #endif // EXCEPTIONS_H
