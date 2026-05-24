@@ -1,16 +1,16 @@
 {
 	"AUTOGEN_COMMAND_LINE_LENGTH_MAX" : 32000,
-	"BUILD_DIR" : "D:/LABS/LAB.2.2/build/LAB2_autogen",
-	"CMAKE_BINARY_DIR" : "D:/LABS/LAB.2.2/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "D:/LABS/LAB.2.2/build",
-	"CMAKE_CURRENT_SOURCE_DIR" : "D:/LABS/LAB.2.2",
+	"BUILD_DIR" : "D:/LABS/LAB.2.3/build/LAB2_autogen",
+	"CMAKE_BINARY_DIR" : "D:/LABS/LAB.2.3/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/LABS/LAB.2.3/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/LABS/LAB.2.3",
 	"CMAKE_EXECUTABLE" : "D:/Cmake/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"D:/LABS/LAB.2.2/CMakeLists.txt",
+		"D:/LABS/LAB.2.3/CMakeLists.txt",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineSystem.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeSystem.cmake.in",
-		"D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeSystem.cmake",
+		"D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeSystem.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeMinGWFindMake.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeSystemSpecificInitialize.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-Initialize.cmake",
@@ -66,7 +66,7 @@
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeFindBinUtils.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Compiler/GNU-FindBinUtils.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeCXXCompiler.cmake.in",
-		"D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake",
+		"D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeSystemSpecificInformation.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeGenericSystem.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeInitializeConfigs.cmake",
@@ -81,7 +81,7 @@
 		"D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-GNU.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineRCCompiler.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeRCCompiler.cmake.in",
-		"D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeRCCompiler.cmake",
+		"D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeRCCompiler.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeRCInformation.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-windres.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeTestRCCompiler.cmake",
@@ -98,7 +98,7 @@
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineCompilerSupport.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Internal/FeatureTesting.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeCXXCompiler.cmake.in",
-		"D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake",
+		"D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Internal/CMakeCXXLinkerInformation.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/Internal/CMakeCommonLinkerInformation.cmake",
@@ -360,76 +360,82 @@
 		"D:/Cmake/share/cmake-4.3/Modules/GNUInstallDirs.cmake",
 		"D:/Cmake/share/cmake-4.3/Modules/GNUInstallDirs.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "D:/LABS/LAB.2.2",
+	"CMAKE_SOURCE_DIR" : "D:/LABS/LAB.2.3",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "D:/LABS/LAB.2.2/build/LAB2_autogen/deps",
+	"DEP_FILE" : "D:/LABS/LAB.2.3/build/LAB2_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "LAB2_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"D:/LABS/LAB.2.2/include/ArraySequence.h",
+			"D:/LABS/LAB.2.3/include/ArraySequence.h",
 			"MU",
 			"6YEA5652QU/moc_ArraySequence.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/DynamicArray.h",
+			"D:/LABS/LAB.2.3/include/DynamicArray.h",
 			"MU",
 			"6YEA5652QU/moc_DynamicArray.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/Exceptions.h",
+			"D:/LABS/LAB.2.3/include/Exceptions.h",
 			"MU",
 			"6YEA5652QU/moc_Exceptions.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/LinkedList.h",
+			"D:/LABS/LAB.2.3/include/LinkedList.h",
 			"MU",
 			"6YEA5652QU/moc_LinkedList.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/ListSequence.h",
+			"D:/LABS/LAB.2.3/include/ListSequence.h",
 			"MU",
 			"6YEA5652QU/moc_ListSequence.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/MainWindow.h",
+			"D:/LABS/LAB.2.3/include/MainWindow.h",
 			"MU",
 			"6YEA5652QU/moc_MainWindow.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/MapUtils.h",
+			"D:/LABS/LAB.2.3/include/MapUtils.h",
 			"MU",
 			"6YEA5652QU/moc_MapUtils.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/Sequence.h",
+			"D:/LABS/LAB.2.3/include/Sequence.h",
 			"MU",
 			"6YEA5652QU/moc_Sequence.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/WindowInt.h",
+			"D:/LABS/LAB.2.3/include/TriangleMatrix.h",
+			"MU",
+			"6YEA5652QU/moc_TriangleMatrix.cpp",
+			null
+		],
+		[
+			"D:/LABS/LAB.2.3/include/WindowInt.h",
 			"MU",
 			"6YEA5652QU/moc_WindowInt.cpp",
 			null
 		],
 		[
-			"D:/LABS/LAB.2.2/include/test.h",
+			"D:/LABS/LAB.2.3/include/test.h",
 			"MU",
 			"6YEA5652QU/moc_test.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "D:/LABS/LAB.2.2/build/LAB2_autogen/include",
-	"MOC_COMPILATION_FILE" : "D:/LABS/LAB.2.2/build/LAB2_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "D:/LABS/LAB.2.3/build/LAB2_autogen/include",
+	"MOC_COMPILATION_FILE" : "D:/LABS/LAB.2.3/build/LAB2_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
@@ -485,21 +491,21 @@
 		"-E",
 		"D:/Cmake/share/cmake-4.3/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "D:/LABS/LAB.2.2/build/LAB2_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "D:/LABS/LAB.2.3/build/LAB2_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 6,
-	"PARSE_CACHE_FILE" : "D:/LABS/LAB.2.2/build/CMakeFiles/LAB2_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "D:/LABS/LAB.2.3/build/CMakeFiles/LAB2_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "D:/Qt/6.11.0/mingw_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "D:/Qt/6.11.0/mingw_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 11,
-	"SETTINGS_FILE" : "D:/LABS/LAB.2.2/build/CMakeFiles/LAB2_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "D:/LABS/LAB.2.3/build/CMakeFiles/LAB2_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "D:/LABS/LAB.2.2/src/main.cpp", "MU", null ],
-		[ "D:/LABS/LAB.2.2/src/test.cpp", "MU", null ]
+		[ "D:/LABS/LAB.2.3/src/main.cpp", "MU", null ],
+		[ "D:/LABS/LAB.2.3/src/test.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

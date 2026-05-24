@@ -1,6 +1,6 @@
-CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.2\src\main.cpp \
- D:/LABS/LAB.2.2/include/MainWindow.h \
- D:/LABS/LAB.2.2/include/WindowTest.h \
+CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.3\src\main.cpp \
+ D:/LABS/LAB.2.3/include/MainWindow.h \
+ D:/LABS/LAB.2.3/include/WindowTest.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QApplication \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qapplication.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -421,7 +421,7 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.2\src\main.cpp \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QPushButton \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qpushbutton.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractbutton.h \
- D:/LABS/LAB.2.2/include/WindowChar.h \
+ D:/LABS/LAB.2.3/include/WindowChar.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QMainWindow \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qmainwindow.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qtabwidget.h \
@@ -455,9 +455,9 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.2\src\main.cpp \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qinputdialog.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QMap \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QSet \
- D:/LABS/LAB.2.2/include/Sequence.h \
- D:/LABS/LAB.2.2/include/ArraySequence.h \
- D:/LABS/LAB.2.2/include/DynamicArray.h \
+ D:/LABS/LAB.2.3/include/Sequence.h \
+ D:/LABS/LAB.2.3/include/ArraySequence.h \
+ D:/LABS/LAB.2.3/include/DynamicArray.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
@@ -472,18 +472,18 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.2\src\main.cpp \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
- D:/LABS/LAB.2.2/include/Exceptions.h D:/LABS/LAB.2.2/include/MapUtils.h \
- D:/LABS/LAB.2.2/include/ListSequence.h \
- D:/LABS/LAB.2.2/include/LinkedList.h D:/LABS/LAB.2.2/include/ZipUnzip.h \
- D:/LABS/LAB.2.2/include/WindowDouble.h \
- D:/LABS/LAB.2.2/include/WindowInt.h \
- D:/LABS/LAB.2.2/include/WindowString.h D:/LABS/LAB.2.2/include/test.h \
- D:/LABS/LAB.2.2/include/test.h D:/LABS/LAB.2.2/include/DynamicArray.h \
- D:/LABS/LAB.2.2/include/LinkedList.h \
- D:/LABS/LAB.2.2/include/ArraySequence.h \
- D:/LABS/LAB.2.2/include/ListSequence.h \
- D:/LABS/LAB.2.2/include/Exceptions.h D:/LABS/LAB.2.2/include/ZipUnzip.h \
- D:/LABS/LAB.2.2/include/MapUtils.h \
+ D:/LABS/LAB.2.3/include/Exceptions.h D:/LABS/LAB.2.3/include/MapUtils.h \
+ D:/LABS/LAB.2.3/include/ListSequence.h \
+ D:/LABS/LAB.2.3/include/LinkedList.h D:/LABS/LAB.2.3/include/ZipUnzip.h \
+ D:/LABS/LAB.2.3/include/WindowDouble.h \
+ D:/LABS/LAB.2.3/include/WindowInt.h \
+ D:/LABS/LAB.2.3/include/WindowString.h D:/LABS/LAB.2.3/include/test.h \
+ D:/LABS/LAB.2.3/include/test.h D:/LABS/LAB.2.3/include/DynamicArray.h \
+ D:/LABS/LAB.2.3/include/LinkedList.h \
+ D:/LABS/LAB.2.3/include/ArraySequence.h \
+ D:/LABS/LAB.2.3/include/ListSequence.h \
+ D:/LABS/LAB.2.3/include/Exceptions.h D:/LABS/LAB.2.3/include/ZipUnzip.h \
+ D:/LABS/LAB.2.3/include/MapUtils.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QString \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc

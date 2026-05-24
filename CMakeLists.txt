@@ -30,6 +30,7 @@ target_sources(LAB2 PRIVATE
     include/Exceptions.h
     include/MapUtils.h
     include/test.h
+    include/TriangleMatrix.h
 )
 
 target_link_libraries(LAB2

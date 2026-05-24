@@ -2,6 +2,7 @@
 #include "../include/DynamicArray.h"
 #include "../include/LinkedList.h"
 #include "../include/Exceptions.h"
+#include "../include/TriangleMatrix.h"
 #include <QVariant>
 #include <QString>
 #include <memory>
@@ -103,6 +104,11 @@ QString TestRunnerGUI::runAllTests() {
     testZipUnzipString();
     
     testMapUtils();
+
+    testTriangleMatrixInt();
+    testTriangleMatrixDouble();
+    testTriangleMatrixComplex();
+    testTriangleMatrixOperations();
     
     printSummary();
     return QString::fromStdString(output.str());
@@ -1337,6 +1343,173 @@ void TestRunnerGUI::testMapUtils() {
         ASSERT(functions::where::is_even(3) == false);
         ASSERT(functions::where::is_odd(3) == true);
         ASSERT(functions::where::is_odd(4) == false);
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testTriangleMatrixInt() {
+    TEST("TriangleMatrix: создание и доступ к элементам (int)") {
+        TriangleMatrix<int> upper(3, MatrixType::Upper);
+        upper.set(0, 0, 1);
+        upper.set(0, 1, 2);
+        upper.set(0, 2, 3);
+        upper.set(1, 1, 4);
+        upper.set(1, 2, 5);
+        upper.set(2, 2, 6);
+        
+        ASSERT(upper.get(0, 0) == 1);
+        ASSERT(upper.get(0, 1) == 2);
+        ASSERT(upper.get(0, 2) == 3);
+        ASSERT(upper.get(1, 1) == 4);
+        ASSERT(upper.get(1, 2) == 5);
+        ASSERT(upper.get(2, 2) == 6);
+        ASSERT(upper.get(1, 0) == 0);
+        ASSERT(upper.get(2, 0) == 0);
+        ASSERT(upper.get(2, 1) == 0);
+        
+        return true;
+    } END_TEST();
+    
+    TEST("TriangleMatrix: нижняя треугольная матрица (int)") {
+        TriangleMatrix<int> lower(3, MatrixType::Lower);
+        lower.set(0, 0, 1);
+        lower.set(1, 0, 2);
+        lower.set(1, 1, 3);
+        lower.set(2, 0, 4);
+        lower.set(2, 1, 5);
+        lower.set(2, 2, 6);
+        
+        ASSERT(lower.get(0, 0) == 1);
+        ASSERT(lower.get(1, 0) == 2);
+        ASSERT(lower.get(1, 1) == 3);
+        ASSERT(lower.get(2, 0) == 4);
+        ASSERT(lower.get(2, 1) == 5);
+        ASSERT(lower.get(2, 2) == 6);
+        ASSERT(lower.get(0, 1) == 0);
+        ASSERT(lower.get(0, 2) == 0);
+        ASSERT(lower.get(1, 2) == 0);
+        
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testTriangleMatrixDouble() {
+    TEST("TriangleMatrix: создание и операции (double)") {
+        TriangleMatrix<double> A(2, MatrixType::Upper);
+        A.set(0, 0, 1.5);
+        A.set(0, 1, 2.5);
+        A.set(1, 1, 3.5);
+        
+        ASSERT(A.get(0, 0) == 1.5);
+        ASSERT(A.get(0, 1) == 2.5);
+        ASSERT(A.get(1, 1) == 3.5);
+        
+        TriangleMatrix<double> B(2, MatrixType::Upper);
+        B.set(0, 0, 0.5);
+        B.set(0, 1, 1.5);
+        B.set(1, 1, 2.5);
+        
+        TriangleMatrix<double> C = A.add(B);
+        ASSERT(C.get(0, 0) == 2.0);
+        ASSERT(C.get(0, 1) == 4.0);
+        ASSERT(C.get(1, 1) == 6.0);
+        
+        return true;
+    } END_TEST();
+    
+    TEST("TriangleMatrix: умножение на скаляр (double)") {
+        TriangleMatrix<double> A(2, MatrixType::Upper);
+        A.set(0, 0, 2.0);
+        A.set(0, 1, 3.0);
+        A.set(1, 1, 4.0);
+        
+        TriangleMatrix<double> B = A.multiplyByScalar(2.5);
+        ASSERT(B.get(0, 0) == 5.0);
+        ASSERT(B.get(0, 1) == 7.5);
+        ASSERT(B.get(1, 1) == 10.0);
+        
+        return true;
+    } END_TEST();
+    
+    TEST("TriangleMatrix: вычисление норм (double)") {
+        TriangleMatrix<double> A(2, MatrixType::Upper);
+        A.set(0, 0, 1.0);
+        A.set(0, 1, 2.0);
+        A.set(1, 1, 3.0);
+        
+        double l1 = A.normL1();
+        ASSERT(std::abs(l1 - 5.0) < 1e-9);
+        
+        double lInf = A.normInf();
+        ASSERT(std::abs(lInf - 3.0) < 1e-9);
+        
+        double l2 = A.normL2();
+        ASSERT(std::abs(l2 - 3.74165738677) < 1e-5);
+        
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testTriangleMatrixComplex() {
+    TEST("TriangleMatrix: комплексные числа") {
+        using namespace std::complex_literals;
+        
+        TriangleMatrix<std::complex<double>> A(2, MatrixType::Upper);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 1, std::complex<double>(3, 2));
+        
+        ASSERT(A.get(0, 0) == std::complex<double>(1, 1));
+        ASSERT(A.get(0, 1) == std::complex<double>(2, -1));
+        ASSERT(A.get(1, 1) == std::complex<double>(3, 2));
+        
+        // Сложение комплексных матриц
+        TriangleMatrix<std::complex<double>> B(2, MatrixType::Upper);
+        B.set(0, 0, std::complex<double>(0, -1));
+        B.set(0, 1, std::complex<double>(1, 1));
+        B.set(1, 1, std::complex<double>(1, -2));
+        
+        TriangleMatrix<std::complex<double>> C = A.add(B);
+        ASSERT(C.get(0, 0) == std::complex<double>(1, 0));
+        ASSERT(C.get(0, 1) == std::complex<double>(3, 0));
+        ASSERT(C.get(1, 1) == std::complex<double>(4, 0));
+        
+        // Умножение на скаляр (комплексный)
+        TriangleMatrix<std::complex<double>> D = A.multiplyByScalar(std::complex<double>(0, 1));
+        ASSERT(D.get(0, 0) == std::complex<double>(-1, 1));
+        ASSERT(D.get(0, 1) == std::complex<double>(1, 2));
+        
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testTriangleMatrixOperations() {
+    TEST("TriangleMatrix: исключения при несовместимых размерах") {
+        TriangleMatrix<int> A(2);
+        TriangleMatrix<int> B(3);
+        
+        bool exceptionThrown = false;
+        try {
+            A.add(B);
+        } catch (SizeException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        
+        return true;
+    } END_TEST();
+    
+    TEST("TriangleMatrix: исключения при попытке установить ненулевое значение вне треугольника") {
+        TriangleMatrix<int> upper(2, MatrixType::Upper);
+        
+        bool exceptionThrown = false;
+        try {
+            upper.set(1, 0, 5);
+        } catch (IndexOutOFBoundsException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        
         return true;
     } END_TEST();
 }

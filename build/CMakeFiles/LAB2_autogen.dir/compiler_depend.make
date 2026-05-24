@@ -108,22 +108,23 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-windres.cmake \
   D:/Cmake/share/cmake-4.3/Modules/Platform/Windows.cmake \
   D:/Cmake/share/cmake-4.3/Modules/Platform/WindowsPaths.cmake \
-  D:/LABS/LAB.2.2/CMakeLists.txt \
+  D:/LABS/LAB.2.3/CMakeLists.txt \
   CMakeFiles/4.3.2/CMakeCXXCompiler.cmake \
   CMakeFiles/4.3.2/CMakeRCCompiler.cmake \
   CMakeFiles/4.3.2/CMakeSystem.cmake \
-  D:/LABS/LAB.2.2/include/ArraySequence.h \
-  D:/LABS/LAB.2.2/include/DynamicArray.h \
-  D:/LABS/LAB.2.2/include/Exceptions.h \
-  D:/LABS/LAB.2.2/include/LinkedList.h \
-  D:/LABS/LAB.2.2/include/ListSequence.h \
-  D:/LABS/LAB.2.2/include/MainWindow.h \
-  D:/LABS/LAB.2.2/include/MapUtils.h \
-  D:/LABS/LAB.2.2/include/Sequence.h \
-  D:/LABS/LAB.2.2/include/WindowInt.h \
-  D:/LABS/LAB.2.2/include/test.h \
-  D:/LABS/LAB.2.2/src/main.cpp \
-  D:/LABS/LAB.2.2/src/test.cpp \
+  D:/LABS/LAB.2.3/include/ArraySequence.h \
+  D:/LABS/LAB.2.3/include/DynamicArray.h \
+  D:/LABS/LAB.2.3/include/Exceptions.h \
+  D:/LABS/LAB.2.3/include/LinkedList.h \
+  D:/LABS/LAB.2.3/include/ListSequence.h \
+  D:/LABS/LAB.2.3/include/MainWindow.h \
+  D:/LABS/LAB.2.3/include/MapUtils.h \
+  D:/LABS/LAB.2.3/include/Sequence.h \
+  D:/LABS/LAB.2.3/include/TriangleMatrix.h \
+  D:/LABS/LAB.2.3/include/WindowInt.h \
+  D:/LABS/LAB.2.3/include/test.h \
+  D:/LABS/LAB.2.3/src/main.cpp \
+  D:/LABS/LAB.2.3/src/test.cpp \
   D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/FindWrapAtomic.cmake \
   D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/FindWrapVulkanHeaders.cmake \
   D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/Qt6Config.cmake \
@@ -347,6 +348,8 @@ D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineCompiler.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/CMakeTestCXXCompiler.cmake:
 
+D:/LABS/LAB.2.3/include/MapUtils.h:
+
 D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineCompilerABI.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineCompilerSupport.cmake:
@@ -354,6 +357,8 @@ D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineCompilerSupport.cmake:
 D:/Cmake/share/cmake-4.3/Modules/CMakeDetermineSystem.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/CMakeFindBinUtils.cmake:
+
+D:/LABS/LAB.2.3/include/LinkedList.h:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/CrayClang-DetermineCompiler.cmake:
 
@@ -427,8 +432,6 @@ D:/Cmake/share/cmake-4.3/Modules/CMakeTestRCCompiler.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake:
 
-D:/LABS/LAB.2.2/CMakeLists.txt:
-
 D:/Cmake/share/cmake-4.3/Modules/CheckCXXSourceCompiles.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsTargetsPrecheck.cmake:
@@ -444,8 +447,6 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QICOPluginAdditionalTargetInfo.cmake:
 D:/Cmake/share/cmake-4.3/Modules/Compiler/Clang-DetermineCompiler.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake:
-
-D:/LABS/LAB.2.2/include/MainWindow.h:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake:
 
@@ -496,8 +497,6 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiVersionlessAliasTargets.cmake:
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomSystemDepHelpers.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/PGI-DetermineCompiler.cmake:
-
-D:/LABS/LAB.2.2/src/test.cpp:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/PathScale-DetermineCompiler.cmake:
 
@@ -597,39 +596,41 @@ D:/Cmake/share/cmake-4.3/Modules/Platform/Windows.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/Platform/WindowsPaths.cmake:
 
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets-relwithdebinfo.cmake:
+
+D:/LABS/LAB.2.3/CMakeLists.txt:
+
 CMakeFiles/4.3.2/CMakeCXXCompiler.cmake:
 
 CMakeFiles/4.3.2/CMakeRCCompiler.cmake:
 
 CMakeFiles/4.3.2/CMakeSystem.cmake:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QTuioTouchPluginConfig.cmake:
+D:/LABS/LAB.2.3/include/ArraySequence.h:
 
-D:/LABS/LAB.2.2/include/ArraySequence.h:
+D:/LABS/LAB.2.3/include/DynamicArray.h:
 
-D:/LABS/LAB.2.2/include/DynamicArray.h:
+D:/LABS/LAB.2.3/include/Exceptions.h:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake:
+D:/LABS/LAB.2.3/include/ListSequence.h:
 
-D:/LABS/LAB.2.2/include/Exceptions.h:
+D:/LABS/LAB.2.3/include/MainWindow.h:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake:
+D:/LABS/LAB.2.3/include/Sequence.h:
 
-D:/LABS/LAB.2.2/include/LinkedList.h:
+D:/LABS/LAB.2.3/include/TriangleMatrix.h:
 
-D:/LABS/LAB.2.2/include/ListSequence.h:
+D:/LABS/LAB.2.3/include/WindowInt.h:
 
-D:/LABS/LAB.2.2/include/MapUtils.h:
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6GuiTools/Qt6GuiToolsAdditionalTargetInfo.cmake:
 
-D:/LABS/LAB.2.2/include/Sequence.h:
+D:/LABS/LAB.2.3/include/test.h:
 
-D:/LABS/LAB.2.2/include/WindowInt.h:
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCommonGenerationHelpers.cmake:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomGenerationHelpers.cmake:
+D:/LABS/LAB.2.3/src/main.cpp:
 
-D:/LABS/LAB.2.2/include/test.h:
-
-D:/LABS/LAB.2.2/src/main.cpp:
+D:/LABS/LAB.2.3/src/test.cpp:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QSvgPluginConfig.cmake:
 
@@ -689,8 +690,6 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCommonGenerationHelpers.cmake:
-
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCycloneDXHelpers.cmake:
@@ -702,6 +701,8 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomFileHelpers.cmake:
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QOffscreenIntegrationPluginTargets.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomGenerationCycloneDXHelpers.cmake:
+
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomGenerationHelpers.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QSvgPluginAdditionalTargetInfo.cmake:
 
@@ -787,7 +788,7 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiPlugins.cmake:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets-relwithdebinfo.cmake:
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QGifPluginTargets.cmake:
 
@@ -833,6 +834,8 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QSvgPluginTargets.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QSvgPluginTargetsPrecheck.cmake:
 
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QTuioTouchPluginConfig.cmake:
+
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QTuioTouchPluginTargets.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QTuioTouchPluginTargetsPrecheck.cmake:
@@ -844,8 +847,6 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QWindowsDirect2DIntegrationPluginTarge
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QWindowsIntegrationPluginAdditionalTargetInfo.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QWindowsIntegrationPluginTargetsPrecheck.cmake:
-
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6GuiTools/Qt6GuiToolsAdditionalTargetInfo.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersion.cmake:
 
@@ -884,6 +885,8 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake:
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake:
+
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake:
 

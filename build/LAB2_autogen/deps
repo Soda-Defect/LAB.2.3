@@ -105,22 +105,23 @@ LAB2_autogen/timestamp: \
 	D:/Cmake/share/cmake-4.3/Modules/Platform/Windows-windres.cmake \
 	D:/Cmake/share/cmake-4.3/Modules/Platform/Windows.cmake \
 	D:/Cmake/share/cmake-4.3/Modules/Platform/WindowsPaths.cmake \
-	D:/LABS/LAB.2.2/CMakeLists.txt \
-	D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake \
-	D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeRCCompiler.cmake \
-	D:/LABS/LAB.2.2/build/CMakeFiles/4.3.2/CMakeSystem.cmake \
-	D:/LABS/LAB.2.2/include/ArraySequence.h \
-	D:/LABS/LAB.2.2/include/DynamicArray.h \
-	D:/LABS/LAB.2.2/include/Exceptions.h \
-	D:/LABS/LAB.2.2/include/LinkedList.h \
-	D:/LABS/LAB.2.2/include/ListSequence.h \
-	D:/LABS/LAB.2.2/include/MainWindow.h \
-	D:/LABS/LAB.2.2/include/MapUtils.h \
-	D:/LABS/LAB.2.2/include/Sequence.h \
-	D:/LABS/LAB.2.2/include/WindowInt.h \
-	D:/LABS/LAB.2.2/include/test.h \
-	D:/LABS/LAB.2.2/src/main.cpp \
-	D:/LABS/LAB.2.2/src/test.cpp \
+	D:/LABS/LAB.2.3/CMakeLists.txt \
+	D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake \
+	D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeRCCompiler.cmake \
+	D:/LABS/LAB.2.3/build/CMakeFiles/4.3.2/CMakeSystem.cmake \
+	D:/LABS/LAB.2.3/include/ArraySequence.h \
+	D:/LABS/LAB.2.3/include/DynamicArray.h \
+	D:/LABS/LAB.2.3/include/Exceptions.h \
+	D:/LABS/LAB.2.3/include/LinkedList.h \
+	D:/LABS/LAB.2.3/include/ListSequence.h \
+	D:/LABS/LAB.2.3/include/MainWindow.h \
+	D:/LABS/LAB.2.3/include/MapUtils.h \
+	D:/LABS/LAB.2.3/include/Sequence.h \
+	D:/LABS/LAB.2.3/include/TriangleMatrix.h \
+	D:/LABS/LAB.2.3/include/WindowInt.h \
+	D:/LABS/LAB.2.3/include/test.h \
+	D:/LABS/LAB.2.3/src/main.cpp \
+	D:/LABS/LAB.2.3/src/test.cpp \
 	D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/FindWrapAtomic.cmake \
 	D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/FindWrapVulkanHeaders.cmake \
 	D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/Qt6Config.cmake \

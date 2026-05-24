@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/LABS/LAB.2.2/build/LAB2_autogen/mocs_compilation.cpp" "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj.d"
-  "D:/LABS/LAB.2.2/src/main.cpp" "CMakeFiles/LAB2.dir/src/main.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/src/main.cpp.obj.d"
-  "D:/LABS/LAB.2.2/src/test.cpp" "CMakeFiles/LAB2.dir/src/test.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/src/test.cpp.obj.d"
+  "D:/LABS/LAB.2.3/build/LAB2_autogen/mocs_compilation.cpp" "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj.d"
+  "D:/LABS/LAB.2.3/src/main.cpp" "CMakeFiles/LAB2.dir/src/main.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/src/main.cpp.obj.d"
+  "D:/LABS/LAB.2.3/src/test.cpp" "CMakeFiles/LAB2.dir/src/test.cpp.obj" "gcc" "CMakeFiles/LAB2.dir/src/test.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

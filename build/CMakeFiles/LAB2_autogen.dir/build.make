@@ -52,10 +52,10 @@ RM = D:\Cmake\bin\cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\LABS\LAB.2.2
+CMAKE_SOURCE_DIR = D:\LABS\LAB.2.3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\LABS\LAB.2.2\build
+CMAKE_BINARY_DIR = D:\LABS\LAB.2.3\build
 
 # Utility rule file for LAB2_autogen.
 
@@ -70,9 +70,9 @@ CMakeFiles/LAB2_autogen: LAB2_autogen/timestamp
 LAB2_autogen/timestamp: D:/Qt/6.11.0/mingw_64/bin/moc.exe
 LAB2_autogen/timestamp: D:/Qt/6.11.0/mingw_64/bin/uic.exe
 LAB2_autogen/timestamp: CMakeFiles/LAB2_autogen.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=D:\LABS\LAB.2.2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target LAB2"
-	D:\Cmake\bin\cmake.exe -E cmake_autogen D:/LABS/LAB.2.2/build/CMakeFiles/LAB2_autogen.dir/AutogenInfo.json ""
-	D:\Cmake\bin\cmake.exe -E touch D:/LABS/LAB.2.2/build/LAB2_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=D:\LABS\LAB.2.3\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target LAB2"
+	D:\Cmake\bin\cmake.exe -E cmake_autogen D:/LABS/LAB.2.3/build/CMakeFiles/LAB2_autogen.dir/AutogenInfo.json ""
+	D:\Cmake\bin\cmake.exe -E touch D:/LABS/LAB.2.3/build/LAB2_autogen/timestamp
 
 CMakeFiles/LAB2_autogen.dir/codegen:
 .PHONY : CMakeFiles/LAB2_autogen.dir/codegen
@@ -91,6 +91,6 @@ CMakeFiles/LAB2_autogen.dir/clean:
 .PHONY : CMakeFiles/LAB2_autogen.dir/clean
 
 CMakeFiles/LAB2_autogen.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.2 D:\LABS\LAB.2.2 D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build\CMakeFiles\LAB2_autogen.dir\DependInfo.cmake "--color=$(COLOR)" LAB2_autogen
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.3 D:\LABS\LAB.2.3 D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build\CMakeFiles\LAB2_autogen.dir\DependInfo.cmake "--color=$(COLOR)" LAB2_autogen
 .PHONY : CMakeFiles/LAB2_autogen.dir/depend
 

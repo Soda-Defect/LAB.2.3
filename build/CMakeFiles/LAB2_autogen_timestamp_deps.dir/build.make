@@ -52,10 +52,10 @@ RM = D:\Cmake\bin\cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\LABS\LAB.2.2
+CMAKE_SOURCE_DIR = D:\LABS\LAB.2.3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\LABS\LAB.2.2\build
+CMAKE_BINARY_DIR = D:\LABS\LAB.2.3\build
 
 # Utility rule file for LAB2_autogen_timestamp_deps.
 
@@ -80,6 +80,6 @@ CMakeFiles/LAB2_autogen_timestamp_deps.dir/clean:
 .PHONY : CMakeFiles/LAB2_autogen_timestamp_deps.dir/clean
 
 CMakeFiles/LAB2_autogen_timestamp_deps.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.2 D:\LABS\LAB.2.2 D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build\CMakeFiles\LAB2_autogen_timestamp_deps.dir\DependInfo.cmake "--color=$(COLOR)" LAB2_autogen_timestamp_deps
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.3 D:\LABS\LAB.2.3 D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build\CMakeFiles\LAB2_autogen_timestamp_deps.dir\DependInfo.cmake "--color=$(COLOR)" LAB2_autogen_timestamp_deps
 .PHONY : CMakeFiles/LAB2_autogen_timestamp_deps.dir/depend
 

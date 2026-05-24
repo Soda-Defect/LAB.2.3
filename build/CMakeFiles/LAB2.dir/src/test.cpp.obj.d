@@ -1,6 +1,6 @@
-CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.2\src\test.cpp \
- D:/LABS/LAB.2.2/include/test.h D:/LABS/LAB.2.2/include/test.h \
- D:/LABS/LAB.2.2/include/DynamicArray.h \
+CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.3\src\test.cpp \
+ D:/LABS/LAB.2.3/include/test.h D:/LABS/LAB.2.3/include/test.h \
+ D:/LABS/LAB.2.3/include/DynamicArray.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/algorithm \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_algobase.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -151,10 +151,10 @@ CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.2\src\test.cpp \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
- D:/LABS/LAB.2.2/include/Exceptions.h \
- D:/LABS/LAB.2.2/include/LinkedList.h \
- D:/LABS/LAB.2.2/include/ArraySequence.h \
- D:/LABS/LAB.2.2/include/Sequence.h \
+ D:/LABS/LAB.2.3/include/Exceptions.h \
+ D:/LABS/LAB.2.3/include/LinkedList.h \
+ D:/LABS/LAB.2.3/include/ArraySequence.h \
+ D:/LABS/LAB.2.3/include/Sequence.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/functional \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/std_function.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/unordered_map \
@@ -172,8 +172,8 @@ CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.2\src\test.cpp \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/vector.tcc \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/array \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/compare \
- D:/LABS/LAB.2.2/include/DynamicArray.h \
- D:/LABS/LAB.2.2/include/MapUtils.h \
+ D:/LABS/LAB.2.3/include/DynamicArray.h \
+ D:/LABS/LAB.2.3/include/MapUtils.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cmath \
  D:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/math.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/specfun.h \
@@ -190,11 +190,11 @@ CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.2\src\test.cpp \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_hermite.tcc \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_laguerre.tcc \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/riemann_zeta.tcc \
- D:/LABS/LAB.2.2/include/ListSequence.h \
- D:/LABS/LAB.2.2/include/LinkedList.h \
- D:/LABS/LAB.2.2/include/Exceptions.h D:/LABS/LAB.2.2/include/ZipUnzip.h \
- D:/LABS/LAB.2.2/include/ArraySequence.h \
- D:/LABS/LAB.2.2/include/MapUtils.h \
+ D:/LABS/LAB.2.3/include/ListSequence.h \
+ D:/LABS/LAB.2.3/include/LinkedList.h \
+ D:/LABS/LAB.2.3/include/Exceptions.h D:/LABS/LAB.2.3/include/ZipUnzip.h \
+ D:/LABS/LAB.2.3/include/ArraySequence.h \
+ D:/LABS/LAB.2.3/include/MapUtils.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QString \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qstring.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qchar.h \
@@ -309,9 +309,11 @@ CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.2\src\test.cpp \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qstringconverter_base.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc \
- D:/LABS/LAB.2.2/include/DynamicArray.h \
- D:/LABS/LAB.2.2/include/LinkedList.h \
- D:/LABS/LAB.2.2/include/Exceptions.h \
+ D:/LABS/LAB.2.3/include/DynamicArray.h \
+ D:/LABS/LAB.2.3/include/LinkedList.h \
+ D:/LABS/LAB.2.3/include/Exceptions.h \
+ D:/LABS/LAB.2.3/include/TriangleMatrix.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/complex \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QVariant \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qvariant.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qmetatype.h \

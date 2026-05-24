@@ -52,10 +52,10 @@ RM = D:\Cmake\bin\cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\LABS\LAB.2.2
+CMAKE_SOURCE_DIR = D:\LABS\LAB.2.3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\LABS\LAB.2.2\build
+CMAKE_BINARY_DIR = D:\LABS\LAB.2.3\build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/LAB2.dir/depend.make
@@ -75,46 +75,46 @@ CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj: CMakeFiles/LAB2.dir/f
 CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj: CMakeFiles/LAB2.dir/includes_CXX.rsp
 CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj: LAB2_autogen/mocs_compilation.cpp
 CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj: CMakeFiles/LAB2.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj -MF CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.obj.d -o CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.obj -c D:\LABS\LAB.2.2\build\LAB2_autogen\mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.3\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj"
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj -MF CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.obj.d -o CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.obj -c D:\LABS\LAB.2.3\build\LAB2_autogen\mocs_compilation.cpp
 
 CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.i"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.2\build\LAB2_autogen\mocs_compilation.cpp > CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.i
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.3\build\LAB2_autogen\mocs_compilation.cpp > CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.i
 
 CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.s"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.2\build\LAB2_autogen\mocs_compilation.cpp -o CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.s
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.3\build\LAB2_autogen\mocs_compilation.cpp -o CMakeFiles\LAB2.dir\LAB2_autogen\mocs_compilation.cpp.s
 
 CMakeFiles/LAB2.dir/src/main.cpp.obj: CMakeFiles/LAB2.dir/flags.make
 CMakeFiles/LAB2.dir/src/main.cpp.obj: CMakeFiles/LAB2.dir/includes_CXX.rsp
-CMakeFiles/LAB2.dir/src/main.cpp.obj: D:/LABS/LAB.2.2/src/main.cpp
+CMakeFiles/LAB2.dir/src/main.cpp.obj: D:/LABS/LAB.2.3/src/main.cpp
 CMakeFiles/LAB2.dir/src/main.cpp.obj: CMakeFiles/LAB2.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/LAB2.dir/src/main.cpp.obj"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/src/main.cpp.obj -MF CMakeFiles\LAB2.dir\src\main.cpp.obj.d -o CMakeFiles\LAB2.dir\src\main.cpp.obj -c D:\LABS\LAB.2.2\src\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.3\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/LAB2.dir/src/main.cpp.obj"
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/src/main.cpp.obj -MF CMakeFiles\LAB2.dir\src\main.cpp.obj.d -o CMakeFiles\LAB2.dir\src\main.cpp.obj -c D:\LABS\LAB.2.3\src\main.cpp
 
 CMakeFiles/LAB2.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/LAB2.dir/src/main.cpp.i"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.2\src\main.cpp > CMakeFiles\LAB2.dir\src\main.cpp.i
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.3\src\main.cpp > CMakeFiles\LAB2.dir\src\main.cpp.i
 
 CMakeFiles/LAB2.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/LAB2.dir/src/main.cpp.s"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.2\src\main.cpp -o CMakeFiles\LAB2.dir\src\main.cpp.s
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.3\src\main.cpp -o CMakeFiles\LAB2.dir\src\main.cpp.s
 
 CMakeFiles/LAB2.dir/src/test.cpp.obj: CMakeFiles/LAB2.dir/flags.make
 CMakeFiles/LAB2.dir/src/test.cpp.obj: CMakeFiles/LAB2.dir/includes_CXX.rsp
-CMakeFiles/LAB2.dir/src/test.cpp.obj: D:/LABS/LAB.2.2/src/test.cpp
+CMakeFiles/LAB2.dir/src/test.cpp.obj: D:/LABS/LAB.2.3/src/test.cpp
 CMakeFiles/LAB2.dir/src/test.cpp.obj: CMakeFiles/LAB2.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/LAB2.dir/src/test.cpp.obj"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/src/test.cpp.obj -MF CMakeFiles\LAB2.dir\src\test.cpp.obj.d -o CMakeFiles\LAB2.dir\src\test.cpp.obj -c D:\LABS\LAB.2.2\src\test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\LABS\LAB.2.3\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/LAB2.dir/src/test.cpp.obj"
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/LAB2.dir/src/test.cpp.obj -MF CMakeFiles\LAB2.dir\src\test.cpp.obj.d -o CMakeFiles\LAB2.dir\src\test.cpp.obj -c D:\LABS\LAB.2.3\src\test.cpp
 
 CMakeFiles/LAB2.dir/src/test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/LAB2.dir/src/test.cpp.i"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.2\src\test.cpp > CMakeFiles\LAB2.dir\src\test.cpp.i
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\LABS\LAB.2.3\src\test.cpp > CMakeFiles\LAB2.dir\src\test.cpp.i
 
 CMakeFiles/LAB2.dir/src/test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/LAB2.dir/src/test.cpp.s"
-	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.2\src\test.cpp -o CMakeFiles\LAB2.dir\src\test.cpp.s
+	D:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\LABS\LAB.2.3\src\test.cpp -o CMakeFiles\LAB2.dir\src\test.cpp.s
 
 # Object files for target LAB2
 LAB2_OBJECTS = \
@@ -136,7 +136,7 @@ LAB2.exe: D:/Qt/6.11.0/mingw_64/lib/libQt6EntryPoint.a
 LAB2.exe: CMakeFiles/LAB2.dir/linkLibs.rsp
 LAB2.exe: CMakeFiles/LAB2.dir/objects1.rsp
 LAB2.exe: CMakeFiles/LAB2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\LABS\LAB.2.2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable LAB2.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\LABS\LAB.2.3\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable LAB2.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\LAB2.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -148,6 +148,6 @@ CMakeFiles/LAB2.dir/clean:
 .PHONY : CMakeFiles/LAB2.dir/clean
 
 CMakeFiles/LAB2.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.2 D:\LABS\LAB.2.2 D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build D:\LABS\LAB.2.2\build\CMakeFiles\LAB2.dir\DependInfo.cmake "--color=$(COLOR)" LAB2
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\LABS\LAB.2.3 D:\LABS\LAB.2.3 D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build D:\LABS\LAB.2.3\build\CMakeFiles\LAB2.dir\DependInfo.cmake "--color=$(COLOR)" LAB2
 .PHONY : CMakeFiles/LAB2.dir/depend
 
