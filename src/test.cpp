@@ -2,6 +2,8 @@
 #include "../include/DynamicArray.h"
 #include "../include/LinkedList.h"
 #include "../include/Exceptions.h"
+#include "../include/RectangularMatrix.h"
+#include "../include/SquareMatrix.h"
 #include "../include/TriangleMatrix.h"
 #include <QVariant>
 #include <QString>
@@ -105,10 +107,9 @@ QString TestRunnerGUI::runAllTests() {
     
     testMapUtils();
 
-    testTriangleMatrixInt();
-    testTriangleMatrixDouble();
-    testTriangleMatrixComplex();
-    testTriangleMatrixOperations();
+    testRectangularMatrix();
+    testSquareMatrix();
+    testTriangleMatrix();
     
     printSummary();
     return QString::fromStdString(output.str());
@@ -1347,8 +1348,755 @@ void TestRunnerGUI::testMapUtils() {
     } END_TEST();
 }
 
-void TestRunnerGUI::testTriangleMatrixInt() {
-    TEST("TriangleMatrix: создание и доступ к элементам (int)") {
+void TestRunnerGUI::testRectangularMatrix() {
+    TEST("RectangularMatrix: конструктор по умолчанию") {
+        RectangularMatrix<int> mat;
+        ASSERT(mat.getRows() == 0);
+        ASSERT(mat.getCols() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: конструктор с размерами") {
+        RectangularMatrix<int> mat(3, 4);
+        ASSERT(mat.getRows() == 3);
+        ASSERT(mat.getCols() == 4);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                ASSERT(mat.get(i, j) == 0);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: конструктор с размерами и значением по умолчанию") {
+        RectangularMatrix<int> mat(2, 3, 42);
+        ASSERT(mat.getRows() == 2);
+        ASSERT(mat.getCols() == 3);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                ASSERT(mat.get(i, j) == 42);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: конструктор копирования") {
+        RectangularMatrix<int> mat1(2, 2);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 0, 3); mat1.set(1, 1, 4);
+        
+        RectangularMatrix<int> mat2(mat1);
+        mat1.set(0, 0, 99);
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(0, 1) == 2);
+        ASSERT(mat2.get(1, 0) == 3);
+        ASSERT(mat2.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: оператор присваивания") {
+        RectangularMatrix<int> mat1(2, 2);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 0, 3); mat1.set(1, 1, 4);
+        
+        RectangularMatrix<int> mat2;
+        mat2 = mat1;
+        mat1.set(0, 0, 99);
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: move конструктор") {
+        RectangularMatrix<int> mat1(2, 2);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 0, 3); mat1.set(1, 1, 4);
+        
+        RectangularMatrix<int> mat2(std::move(mat1));
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(1, 1) == 4);
+        ASSERT(mat1.getRows() == 0);
+        ASSERT(mat1.getCols() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: установка и получение элементов") {
+        RectangularMatrix<int> mat(2, 2);
+        mat.set(0, 0, 10);
+        mat.set(0, 1, 20);
+        mat.set(1, 0, 30);
+        mat.set(1, 1, 40);
+        
+        ASSERT(mat.get(0, 0) == 10);
+        ASSERT(mat.get(0, 1) == 20);
+        ASSERT(mat.get(1, 0) == 30);
+        ASSERT(mat.get(1, 1) == 40);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: оператор ()") {
+        RectangularMatrix<int> mat(2, 2);
+        mat(0, 0) = 10;
+        mat(0, 1) = 20;
+        mat(1, 0) = 30;
+        mat(1, 1) = 40;
+        
+        ASSERT(mat(0, 0) == 10);
+        ASSERT(mat(0, 1) == 20);
+        ASSERT(mat(1, 0) == 30);
+        ASSERT(mat(1, 1) == 40);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: сложение матриц (int)") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        RectangularMatrix<int> B(2, 2);
+        B.set(0, 0, 5); B.set(0, 1, 6);
+        B.set(1, 0, 7); B.set(1, 1, 8);
+        
+        RectangularMatrix<int>* C = A.add(B);
+        
+        ASSERT(C->get(0, 0) == 6);
+        ASSERT(C->get(0, 1) == 8);
+        ASSERT(C->get(1, 0) == 10);
+        ASSERT(C->get(1, 1) == 12);
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: сложение матриц (double)") {
+        RectangularMatrix<double> A(2, 2);
+        A.set(0, 0, 1.5); A.set(0, 1, 2.5);
+        A.set(1, 0, 3.5); A.set(1, 1, 4.5);
+        
+        RectangularMatrix<double> B(2, 2);
+        B.set(0, 0, 0.5); B.set(0, 1, 1.5);
+        B.set(1, 0, 2.5); B.set(1, 1, 3.5);
+        
+        RectangularMatrix<double>* C = A.add(B);
+        
+        ASSERT(std::abs(C->get(0, 0) - 2.0) < 1e-9);
+        ASSERT(std::abs(C->get(0, 1) - 4.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 0) - 6.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 1) - 8.0) < 1e-9);
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: сложение матриц (complex)") {
+        using namespace std::complex_literals;
+        
+        RectangularMatrix<std::complex<double>> A(2, 2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 0, std::complex<double>(3, 2));
+        A.set(1, 1, std::complex<double>(4, -2));
+        
+        RectangularMatrix<std::complex<double>> B(2, 2);
+        B.set(0, 0, std::complex<double>(0, -1));
+        B.set(0, 1, std::complex<double>(1, 1));
+        B.set(1, 0, std::complex<double>(2, -2));
+        B.set(1, 1, std::complex<double>(3, 3));
+        
+        RectangularMatrix<std::complex<double>>* C = A.add(B);
+        
+        ASSERT(C->get(0, 0) == std::complex<double>(1, 0));
+        ASSERT(C->get(0, 1) == std::complex<double>(3, 0));
+        ASSERT(C->get(1, 0) == std::complex<double>(5, 0));
+        ASSERT(C->get(1, 1) == std::complex<double>(7, 1));
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: умножение на скаляр (int)") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 2); A.set(0, 1, 4);
+        A.set(1, 0, 6); A.set(1, 1, 8);
+        
+        RectangularMatrix<int>* B = A.multiplyByScalar(3);
+        
+        ASSERT(B->get(0, 0) == 6);
+        ASSERT(B->get(0, 1) == 12);
+        ASSERT(B->get(1, 0) == 18);
+        ASSERT(B->get(1, 1) == 24);
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: умножение на скаляр (double)") {
+        RectangularMatrix<double> A(2, 2);
+        A.set(0, 0, 2.0); A.set(0, 1, 4.0);
+        A.set(1, 0, 6.0); A.set(1, 1, 8.0);
+        
+        RectangularMatrix<double>* B = A.multiplyByScalar(2.5);
+        
+        ASSERT(std::abs(B->get(0, 0) - 5.0) < 1e-9);
+        ASSERT(std::abs(B->get(0, 1) - 10.0) < 1e-9);
+        ASSERT(std::abs(B->get(1, 0) - 15.0) < 1e-9);
+        ASSERT(std::abs(B->get(1, 1) - 20.0) < 1e-9);
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: умножение на скаляр (complex)") {
+        using namespace std::complex_literals;
+        
+        RectangularMatrix<std::complex<double>> A(2, 2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 0, std::complex<double>(3, 2));
+        A.set(1, 1, std::complex<double>(4, -2));
+        
+        RectangularMatrix<std::complex<double>>* B = A.multiplyByScalar(std::complex<double>(0, 1));
+        
+        ASSERT(B->get(0, 0) == std::complex<double>(-1, 1));
+        ASSERT(B->get(0, 1) == std::complex<double>(1, 2));
+        ASSERT(B->get(1, 0) == std::complex<double>(-2, 3));
+        ASSERT(B->get(1, 1) == std::complex<double>(2, 4));
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L1 (int)") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normL1() - 6.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L1 (double)") {
+        RectangularMatrix<double> A(2, 2);
+        A.set(0, 0, 1.5); A.set(0, 1, 2.5);
+        A.set(1, 0, 3.5); A.set(1, 1, 4.5);
+        
+        double expected = std::max(1.5 + 3.5, 2.5 + 4.5);
+        ASSERT(std::abs(A.normL1() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L1 (complex)") {
+        using namespace std::complex_literals;
+        
+        RectangularMatrix<std::complex<double>> A(2, 2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, 0));
+        A.set(1, 0, std::complex<double>(3, -1));
+        A.set(1, 1, std::complex<double>(4, 2));
+        
+        double expected = std::max(
+            std::abs(1.0+1.0i) + std::abs(3.0-1.0i),  
+            std::abs(2.0+0.0i) + std::abs(4.0+2.0i)   
+        );
+        ASSERT(std::abs(A.normL1() - expected) < 1e-5);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L2 (int)") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normInf() - 7.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L2 (double)") {
+        RectangularMatrix<double> A(2, 2);
+        A.set(0, 0, 1.5); A.set(0, 1, 2.5);
+        A.set(1, 0, 3.5); A.set(1, 1, 4.5);
+        
+        double expected = std::max(1.5 + 2.5, 3.5 + 4.5);
+        ASSERT(std::abs(A.normInf() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L2 (complex)") {
+        using namespace std::complex_literals;
+        
+        RectangularMatrix<std::complex<double>> A(2, 2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 0, std::complex<double>(3, 0));
+        A.set(1, 1, std::complex<double>(4, 2));
+        
+        double expected = std::max(
+            std::abs(1.0+1.0i) + std::abs(2.0-1.0i),  
+            std::abs(3.0+0.0i) + std::abs(4.0+2.0i)   
+        );
+        ASSERT(std::abs(A.normInf() - expected) < 1e-5);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L2 (Фробениуса) (int)") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        double expected = std::sqrt(1.0 + 4.0 + 9.0 + 16.0);
+        ASSERT(std::abs(A.normL2() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: норма L2 (Фробениуса) (complex)") {
+        using namespace std::complex_literals;
+        
+        RectangularMatrix<std::complex<double>> A(2, 2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, 0));
+        A.set(1, 0, std::complex<double>(3, -1));
+        A.set(1, 1, std::complex<double>(4, 2));
+        
+        double expected = std::sqrt(
+            std::norm(1.0+1.0i) + std::norm(2.0+0.0i) +
+            std::norm(3.0-1.0i) + std::norm(4.0+2.0i)
+        );
+        ASSERT(std::abs(A.normL2() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: swapRows") {
+        RectangularMatrix<int> A(2, 3);
+        A.set(0, 0, 1); A.set(0, 1, 2); A.set(0, 2, 3);
+        A.set(1, 0, 4); A.set(1, 1, 5); A.set(1, 2, 6);
+        
+        A.swapRows(0, 1);
+        
+        ASSERT(A.get(0, 0) == 4); ASSERT(A.get(0, 1) == 5); ASSERT(A.get(0, 2) == 6);
+        ASSERT(A.get(1, 0) == 1); ASSERT(A.get(1, 1) == 2); ASSERT(A.get(1, 2) == 3);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: multiplyRow") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.multiplyRow(0, 3);
+        
+        ASSERT(A.get(0, 0) == 3);
+        ASSERT(A.get(0, 1) == 6);
+        ASSERT(A.get(1, 0) == 3);
+        ASSERT(A.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: addRowToRow") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.addRowToRow(1, 0, 2);
+        
+        ASSERT(A.get(0, 0) == 7);
+        ASSERT(A.get(0, 1) == 10);
+        ASSERT(A.get(1, 0) == 3);
+        ASSERT(A.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: swapCols") {
+        RectangularMatrix<int> A(2, 3);
+        A.set(0, 0, 1); A.set(0, 1, 2); A.set(0, 2, 3);
+        A.set(1, 0, 4); A.set(1, 1, 5); A.set(1, 2, 6);
+        
+        A.swapCols(0, 2);
+        
+        ASSERT(A.get(0, 0) == 3); ASSERT(A.get(0, 2) == 1);
+        ASSERT(A.get(1, 0) == 6); ASSERT(A.get(1, 2) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: multiplyCol") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.multiplyCol(1, 2);
+        
+        ASSERT(A.get(0, 1) == 4);
+        ASSERT(A.get(1, 1) == 8);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: addColToCol") {
+        RectangularMatrix<int> A(2, 2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.addColToCol(1, 0, 2);
+        
+        ASSERT(A.get(0, 0) == 5);
+        ASSERT(A.get(1, 0) == 11);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: исключения при несовместимых размерах для сложения") {
+        RectangularMatrix<int> A(2, 2);
+        RectangularMatrix<int> B(2, 3);
+        
+        bool exceptionThrown = false;
+        try {
+            A.add(B);
+        } catch (SizeException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        return true;
+    } END_TEST();
+
+    TEST("RectangularMatrix: исключения при выходе за границы") {
+        RectangularMatrix<int> A(2, 2);
+        
+        ASSERT_THROW(A.get(-1, 0), IndexOutOFBoundsException);
+        ASSERT_THROW(A.get(0, -1), IndexOutOFBoundsException);
+        ASSERT_THROW(A.get(2, 0), IndexOutOFBoundsException);
+        ASSERT_THROW(A.get(0, 2), IndexOutOFBoundsException);
+        ASSERT_THROW(A.set(2, 0, 5), IndexOutOFBoundsException);
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testSquareMatrix() {
+    TEST("SquareMatrix: конструктор по умолчанию") {
+        SquareMatrix<int> mat;
+        ASSERT(mat.getRows() == 0);
+        ASSERT(mat.getCols() == 0);
+        ASSERT(mat.getSize() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: конструктор с размером") {
+        SquareMatrix<int> mat(3);
+        ASSERT(mat.getRows() == 3);
+        ASSERT(mat.getCols() == 3);
+        ASSERT(mat.getSize() == 3);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ASSERT(mat.get(i, j) == 0);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: конструктор с размером и значением по умолчанию") {
+        SquareMatrix<int> mat(2, 42);
+        ASSERT(mat.getRows() == 2);
+        ASSERT(mat.getCols() == 2);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                ASSERT(mat.get(i, j) == 42);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: конструктор копирования") {
+        SquareMatrix<int> mat1(2);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 0, 3); mat1.set(1, 1, 4);
+        
+        SquareMatrix<int> mat2(mat1);
+        mat1.set(0, 0, 99);
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: move конструктор") {
+        SquareMatrix<int> mat1(2);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 0, 3); mat1.set(1, 1, 4);
+        
+        SquareMatrix<int> mat2(std::move(mat1));
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(1, 1) == 4);
+        ASSERT(mat1.getSize() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: установка и получение элементов") {
+        SquareMatrix<int> mat(2);
+        mat.set(0, 0, 10);
+        mat.set(0, 1, 20);
+        mat.set(1, 0, 30);
+        mat.set(1, 1, 40);
+        
+        ASSERT(mat.get(0, 0) == 10);
+        ASSERT(mat.get(0, 1) == 20);
+        ASSERT(mat.get(1, 0) == 30);
+        ASSERT(mat.get(1, 1) == 40);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: сложение матриц (int)") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        SquareMatrix<int> B(2);
+        B.set(0, 0, 5); B.set(0, 1, 6);
+        B.set(1, 0, 7); B.set(1, 1, 8);
+        
+        SquareMatrix<int>* C = A.add(B);
+        
+        ASSERT(C->get(0, 0) == 6);
+        ASSERT(C->get(0, 1) == 8);
+        ASSERT(C->get(1, 0) == 10);
+        ASSERT(C->get(1, 1) == 12);
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: сложение матриц (double)") {
+        SquareMatrix<double> A(2);
+        A.set(0, 0, 1.5); A.set(0, 1, 2.5);
+        A.set(1, 0, 3.5); A.set(1, 1, 4.5);
+        
+        SquareMatrix<double> B(2);
+        B.set(0, 0, 0.5); B.set(0, 1, 1.5);
+        B.set(1, 0, 2.5); B.set(1, 1, 3.5);
+        
+        SquareMatrix<double>* C = A.add(B);
+        
+        ASSERT(std::abs(C->get(0, 0) - 2.0) < 1e-9);
+        ASSERT(std::abs(C->get(0, 1) - 4.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 0) - 6.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 1) - 8.0) < 1e-9);
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: сложение матриц (complex)") {
+        using namespace std::complex_literals;
+        
+        SquareMatrix<std::complex<double>> A(2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 0, std::complex<double>(3, 2));
+        A.set(1, 1, std::complex<double>(4, -2));
+        
+        SquareMatrix<std::complex<double>> B(2);
+        B.set(0, 0, std::complex<double>(0, -1));
+        B.set(0, 1, std::complex<double>(1, 1));
+        B.set(1, 0, std::complex<double>(2, -2));
+        B.set(1, 1, std::complex<double>(3, 3));
+        
+        SquareMatrix<std::complex<double>>* C = A.add(B);
+        
+        ASSERT(C->get(0, 0) == std::complex<double>(1, 0));
+        ASSERT(C->get(0, 1) == std::complex<double>(3, 0));
+        ASSERT(C->get(1, 0) == std::complex<double>(5, 0));
+        ASSERT(C->get(1, 1) == std::complex<double>(7, 1));
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: умножение на скаляр (int)") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 2); A.set(0, 1, 4);
+        A.set(1, 0, 6); A.set(1, 1, 8);
+        
+        SquareMatrix<int>* B = A.multiplyByScalar(3);
+        
+        ASSERT(B->get(0, 0) == 6);
+        ASSERT(B->get(0, 1) == 12);
+        ASSERT(B->get(1, 0) == 18);
+        ASSERT(B->get(1, 1) == 24);
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: умножение на скаляр (double)") {
+        SquareMatrix<double> A(2);
+        A.set(0, 0, 2.0); A.set(0, 1, 4.0);
+        A.set(1, 0, 6.0); A.set(1, 1, 8.0);
+        
+        SquareMatrix<double>* B = A.multiplyByScalar(2.5);
+        
+        ASSERT(std::abs(B->get(0, 0) - 5.0) < 1e-9);
+        ASSERT(std::abs(B->get(0, 1) - 10.0) < 1e-9);
+        ASSERT(std::abs(B->get(1, 0) - 15.0) < 1e-9);
+        ASSERT(std::abs(B->get(1, 1) - 20.0) < 1e-9);
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: умножение на скаляр (complex)") {
+        using namespace std::complex_literals;
+        
+        SquareMatrix<std::complex<double>> A(2);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 0, std::complex<double>(3, 2));
+        A.set(1, 1, std::complex<double>(4, -2));
+        
+        SquareMatrix<std::complex<double>>* B = A.multiplyByScalar(std::complex<double>(0, 1));
+        
+        ASSERT(B->get(0, 0) == std::complex<double>(-1, 1));
+        ASSERT(B->get(0, 1) == std::complex<double>(1, 2));
+        ASSERT(B->get(1, 0) == std::complex<double>(-2, 3));
+        ASSERT(B->get(1, 1) == std::complex<double>(2, 4));
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: норма L1 (int)") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normL1() - 6.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: норма L2 (int)") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normInf() - 7.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: норма L2 (Фробениуса) (int)") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        double expected = std::sqrt(1.0 + 4.0 + 9.0 + 16.0);
+        ASSERT(std::abs(A.normL2() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: swapRows") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.swapRows(0, 1);
+        
+        ASSERT(A.get(0, 0) == 3);
+        ASSERT(A.get(1, 0) == 1);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: swapCols") {
+        SquareMatrix<int> A(2);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 0, 3); A.set(1, 1, 4);
+        
+        A.swapCols(0, 1);
+        
+        ASSERT(A.get(0, 0) == 2);
+        ASSERT(A.get(0, 1) == 1);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: исключения при несовместимых размерах для сложения") {
+        SquareMatrix<int> A(2);
+        SquareMatrix<int> B(3);
+        
+        bool exceptionThrown = false;
+        try {
+            A.add(B);
+        } catch (SizeException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        return true;
+    } END_TEST();
+
+    TEST("SquareMatrix: исключения при выходе за границы") {
+        SquareMatrix<int> A(2);
+        
+        ASSERT_THROW(A.get(-1, 0), IndexOutOFBoundsException);
+        ASSERT_THROW(A.get(2, 0), IndexOutOFBoundsException);
+        return true;
+    } END_TEST();
+}
+
+void TestRunnerGUI::testTriangleMatrix() {
+    TEST("TriangleMatrix: конструктор по умолчанию") {
+        TriangleMatrix<int> mat;
+        ASSERT(mat.getRows() == 0);
+        ASSERT(mat.getCols() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: конструктор с размером (верхняя)") {
+        TriangleMatrix<int> mat(3, MatrixType::Upper);
+        ASSERT(mat.getRows() == 3);
+        ASSERT(mat.getCols() == 3);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ASSERT(mat.get(i, j) == 0);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: конструктор с размером (нижняя)") {
+        TriangleMatrix<int> mat(3, MatrixType::Lower);
+        ASSERT(mat.getRows() == 3);
+        ASSERT(mat.getCols() == 3);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ASSERT(mat.get(i, j) == 0);
+            }
+        }
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: конструктор копирования") {
+        TriangleMatrix<int> mat1(2, MatrixType::Upper);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 1, 4);
+        
+        TriangleMatrix<int> mat2(mat1);
+        mat1.set(0, 0, 99);
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(0, 1) == 2);
+        ASSERT(mat2.get(1, 1) == 4);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: move конструктор") {
+        TriangleMatrix<int> mat1(2, MatrixType::Upper);
+        mat1.set(0, 0, 1); mat1.set(0, 1, 2);
+        mat1.set(1, 1, 4);
+        
+        TriangleMatrix<int> mat2(std::move(mat1));
+        
+        ASSERT(mat2.get(0, 0) == 1);
+        ASSERT(mat2.get(1, 1) == 4);
+        ASSERT(mat1.getRows() == 0);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: установка и получение элементов (верхняя)") {
         TriangleMatrix<int> upper(3, MatrixType::Upper);
         upper.set(0, 0, 1);
         upper.set(0, 1, 2);
@@ -1366,11 +2114,10 @@ void TestRunnerGUI::testTriangleMatrixInt() {
         ASSERT(upper.get(1, 0) == 0);
         ASSERT(upper.get(2, 0) == 0);
         ASSERT(upper.get(2, 1) == 0);
-        
         return true;
     } END_TEST();
-    
-    TEST("TriangleMatrix: нижняя треугольная матрица (int)") {
+
+    TEST("TriangleMatrix: установка и получение элементов (нижняя)") {
         TriangleMatrix<int> lower(3, MatrixType::Lower);
         lower.set(0, 0, 1);
         lower.set(1, 0, 2);
@@ -1388,117 +2135,149 @@ void TestRunnerGUI::testTriangleMatrixInt() {
         ASSERT(lower.get(0, 1) == 0);
         ASSERT(lower.get(0, 2) == 0);
         ASSERT(lower.get(1, 2) == 0);
-        
         return true;
     } END_TEST();
-}
 
-void TestRunnerGUI::testTriangleMatrixDouble() {
-    TEST("TriangleMatrix: создание и операции (double)") {
-        TriangleMatrix<double> A(2, MatrixType::Upper);
+        TEST("TriangleMatrix: сложение матриц (int, верхняя)") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 1, 4);
+        
+        TriangleMatrix<int> B(2, MatrixType::Upper);
+        B.set(0, 0, 5); B.set(0, 1, 6);
+        B.set(1, 1, 8);
+        
+        Matrix<int>* C = A.add(B);  
+        
+        ASSERT(C->get(0, 0) == 6);
+        ASSERT(C->get(0, 1) == 8);
+        ASSERT(C->get(1, 1) == 12);
+        
+        delete C;
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: сложение матриц (double, нижняя)") {
+        TriangleMatrix<double> A(2, MatrixType::Lower);
         A.set(0, 0, 1.5);
-        A.set(0, 1, 2.5);
+        A.set(1, 0, 2.5);
         A.set(1, 1, 3.5);
         
-        ASSERT(A.get(0, 0) == 1.5);
-        ASSERT(A.get(0, 1) == 2.5);
-        ASSERT(A.get(1, 1) == 3.5);
-        
-        TriangleMatrix<double> B(2, MatrixType::Upper);
+        TriangleMatrix<double> B(2, MatrixType::Lower);
         B.set(0, 0, 0.5);
-        B.set(0, 1, 1.5);
+        B.set(1, 0, 1.5);
         B.set(1, 1, 2.5);
         
-        TriangleMatrix<double> C = A.add(B);
-        ASSERT(C.get(0, 0) == 2.0);
-        ASSERT(C.get(0, 1) == 4.0);
-        ASSERT(C.get(1, 1) == 6.0);
+        Matrix<double>* C = A.add(B);  
         
+        ASSERT(std::abs(C->get(0, 0) - 2.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 0) - 4.0) < 1e-9);
+        ASSERT(std::abs(C->get(1, 1) - 6.0) < 1e-9);
+        
+        delete C;
         return true;
     } END_TEST();
-    
-    TEST("TriangleMatrix: умножение на скаляр (double)") {
-        TriangleMatrix<double> A(2, MatrixType::Upper);
-        A.set(0, 0, 2.0);
-        A.set(0, 1, 3.0);
-        A.set(1, 1, 4.0);
-        
-        TriangleMatrix<double> B = A.multiplyByScalar(2.5);
-        ASSERT(B.get(0, 0) == 5.0);
-        ASSERT(B.get(0, 1) == 7.5);
-        ASSERT(B.get(1, 1) == 10.0);
-        
-        return true;
-    } END_TEST();
-    
-    TEST("TriangleMatrix: вычисление норм (double)") {
-        TriangleMatrix<double> A(2, MatrixType::Upper);
-        A.set(0, 0, 1.0);
-        A.set(0, 1, 2.0);
-        A.set(1, 1, 3.0);
-        
-        double l1 = A.normL1();
-        ASSERT(std::abs(l1 - 5.0) < 1e-9);
-        
-        double lInf = A.normInf();
-        ASSERT(std::abs(lInf - 3.0) < 1e-9);
-        
-        double l2 = A.normL2();
-        ASSERT(std::abs(l2 - 3.74165738677) < 1e-5);
-        
-        return true;
-    } END_TEST();
-}
 
-void TestRunnerGUI::testTriangleMatrixComplex() {
-    TEST("TriangleMatrix: комплексные числа") {
+    TEST("TriangleMatrix: сложение матриц (complex)") {
         using namespace std::complex_literals;
         
         TriangleMatrix<std::complex<double>> A(2, MatrixType::Upper);
         A.set(0, 0, std::complex<double>(1, 1));
         A.set(0, 1, std::complex<double>(2, -1));
-        A.set(1, 1, std::complex<double>(3, 2));
+        A.set(1, 1, std::complex<double>(4, -2));
         
-        ASSERT(A.get(0, 0) == std::complex<double>(1, 1));
-        ASSERT(A.get(0, 1) == std::complex<double>(2, -1));
-        ASSERT(A.get(1, 1) == std::complex<double>(3, 2));
-        
-        // Сложение комплексных матриц
         TriangleMatrix<std::complex<double>> B(2, MatrixType::Upper);
         B.set(0, 0, std::complex<double>(0, -1));
         B.set(0, 1, std::complex<double>(1, 1));
-        B.set(1, 1, std::complex<double>(1, -2));
+        B.set(1, 1, std::complex<double>(3, 3));
         
-        TriangleMatrix<std::complex<double>> C = A.add(B);
-        ASSERT(C.get(0, 0) == std::complex<double>(1, 0));
-        ASSERT(C.get(0, 1) == std::complex<double>(3, 0));
-        ASSERT(C.get(1, 1) == std::complex<double>(4, 0));
+        Matrix<std::complex<double>>* C = A.add(B);  
         
-        // Умножение на скаляр (комплексный)
-        TriangleMatrix<std::complex<double>> D = A.multiplyByScalar(std::complex<double>(0, 1));
-        ASSERT(D.get(0, 0) == std::complex<double>(-1, 1));
-        ASSERT(D.get(0, 1) == std::complex<double>(1, 2));
+        ASSERT(C->get(0, 0) == std::complex<double>(1, 0));
+        ASSERT(C->get(0, 1) == std::complex<double>(3, 0));
+        ASSERT(C->get(1, 1) == std::complex<double>(7, 1));
         
+        delete C;
         return true;
     } END_TEST();
-}
 
-void TestRunnerGUI::testTriangleMatrixOperations() {
-    TEST("TriangleMatrix: исключения при несовместимых размерах") {
-        TriangleMatrix<int> A(2);
-        TriangleMatrix<int> B(3);
+    TEST("TriangleMatrix: умножение на скаляр (int)") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        A.set(0, 0, 2); A.set(0, 1, 4);
+        A.set(1, 1, 8);
         
-        bool exceptionThrown = false;
-        try {
-            A.add(B);
-        } catch (SizeException) {
-            exceptionThrown = true;
-        }
-        ASSERT(exceptionThrown);
+        Matrix<int>* B = A.multiplyByScalar(3);  
         
+        ASSERT(B->get(0, 0) == 6);
+        ASSERT(B->get(0, 1) == 12);
+        ASSERT(B->get(1, 1) == 24);
+        
+        delete B;
         return true;
     } END_TEST();
-    
+
+    TEST("TriangleMatrix: умножение на скаляр (double)") {
+        TriangleMatrix<double> A(2, MatrixType::Upper);
+        A.set(0, 0, 2.0); A.set(0, 1, 4.0);
+        A.set(1, 1, 8.0);
+        
+        Matrix<double>* B = A.multiplyByScalar(2.5);  
+        
+        ASSERT(std::abs(B->get(0, 0) - 5.0) < 1e-9);
+        ASSERT(std::abs(B->get(0, 1) - 10.0) < 1e-9);
+        ASSERT(std::abs(B->get(1, 1) - 20.0) < 1e-9);
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: умножение на скаляр (complex)") {
+        using namespace std::complex_literals;
+        
+        TriangleMatrix<std::complex<double>> A(2, MatrixType::Upper);
+        A.set(0, 0, std::complex<double>(1, 1));
+        A.set(0, 1, std::complex<double>(2, -1));
+        A.set(1, 1, std::complex<double>(4, -2));
+        
+        Matrix<std::complex<double>>* B = A.multiplyByScalar(std::complex<double>(0, 1));  
+        
+        ASSERT(B->get(0, 0) == std::complex<double>(-1, 1));
+        ASSERT(B->get(0, 1) == std::complex<double>(1, 2));
+        ASSERT(B->get(1, 1) == std::complex<double>(2, 4));
+        
+        delete B;
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: норма L1 (int, верхняя)") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normL1() - 6.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: норма L2 (int, нижняя)") {
+        TriangleMatrix<int> A(2, MatrixType::Lower);
+        A.set(0, 0, 1);
+        A.set(1, 0, 2);
+        A.set(1, 1, 4);
+        
+        ASSERT(std::abs(A.normInf() - 6.0) < 1e-9);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: норма L2 (Фробениуса) (int)") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        A.set(0, 0, 1); A.set(0, 1, 2);
+        A.set(1, 1, 4);
+        
+        double expected = std::sqrt(1.0 + 4.0 + 16.0);
+        ASSERT(std::abs(A.normL2() - expected) < 1e-9);
+        return true;
+    } END_TEST();
+
     TEST("TriangleMatrix: исключения при попытке установить ненулевое значение вне треугольника") {
         TriangleMatrix<int> upper(2, MatrixType::Upper);
         
@@ -1509,7 +2288,42 @@ void TestRunnerGUI::testTriangleMatrixOperations() {
             exceptionThrown = true;
         }
         ASSERT(exceptionThrown);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: исключения при несовместимых размерах для сложения") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        TriangleMatrix<int> B(3, MatrixType::Upper);
         
+        bool exceptionThrown = false;
+        try {
+            A.add(B);
+        } catch (SizeException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: исключения при несовместимых типах для сложения") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        TriangleMatrix<int> B(2, MatrixType::Lower);
+        
+        bool exceptionThrown = false;
+        try {
+            A.add(B);
+        } catch (TypeException) {
+            exceptionThrown = true;
+        }
+        ASSERT(exceptionThrown);
+        return true;
+    } END_TEST();
+
+    TEST("TriangleMatrix: исключения при выходе за границы") {
+        TriangleMatrix<int> A(2, MatrixType::Upper);
+        
+        ASSERT_THROW(A.get(-1, 0), IndexOutOFBoundsException);
+        ASSERT_THROW(A.get(2, 0), IndexOutOFBoundsException);
         return true;
     } END_TEST();
 }

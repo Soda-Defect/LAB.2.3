@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "WindowMatrix.h"
 #include "WindowTest.h"
 #include "WindowChar.h"
 #include "WindowDouble.h"
@@ -12,7 +13,7 @@
 
 int  run(int argc, char *argv[]){
     QApplication a(argc, argv);
-    QStringList types = {"Целые числа", "Вещественные числа", "Символы", "Строки", "Тесты"};
+    QStringList types = {"Целые числа", "Вещественные числа", "Символы", "Строки", "Матрицы", "Тесты"};
     bool ok;
     QString choice = QInputDialog::getItem(nullptr, "Выбор типа данных",
                                            "Выберите тип данных для последовательностей:",
@@ -36,6 +37,10 @@ int  run(int argc, char *argv[]){
         MainWindowString w;
         w.show();
         return a.exec();
+    } else if (choice == "Матрицы") {
+    MainWindowMatrix w;
+    w.show();
+    return a.exec();
     } else if (choice == "Тесты") {
         TestRunnerGUI w;
         QString results = w.runAllTests();

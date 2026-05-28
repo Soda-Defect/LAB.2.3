@@ -56,10 +56,10 @@ private:
     
     void testMapUtils();
 
-    void testTriangleMatrixInt();
-    void testTriangleMatrixDouble();
-    void testTriangleMatrixComplex();
-    void testTriangleMatrixOperations();
+    void testRectangularMatrix();
+    void testSquareMatrix();
+    void testTriangleMatrix();
+
 };
 
 #endif 

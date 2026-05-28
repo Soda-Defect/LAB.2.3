@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj"
   "CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.obj.d"
+  "CMakeFiles/LAB2.dir/src/WindowMatrix.cpp.obj"
+  "CMakeFiles/LAB2.dir/src/WindowMatrix.cpp.obj.d"
   "CMakeFiles/LAB2.dir/src/main.cpp.obj"
   "CMakeFiles/LAB2.dir/src/main.cpp.obj.d"
   "CMakeFiles/LAB2.dir/src/test.cpp.obj"

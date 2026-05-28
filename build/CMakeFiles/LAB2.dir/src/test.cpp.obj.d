@@ -312,8 +312,12 @@ CMakeFiles/LAB2.dir/src/test.cpp.obj: D:\LABS\LAB.2.3\src\test.cpp \
  D:/LABS/LAB.2.3/include/DynamicArray.h \
  D:/LABS/LAB.2.3/include/LinkedList.h \
  D:/LABS/LAB.2.3/include/Exceptions.h \
- D:/LABS/LAB.2.3/include/TriangleMatrix.h \
+ D:/LABS/LAB.2.3/include/RectangularMatrix.h \
+ D:/LABS/LAB.2.3/include/Matrix.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/complex \
+ D:/LABS/LAB.2.3/include/SquareMatrix.h \
+ D:/LABS/LAB.2.3/include/RectangularMatrix.h \
+ D:/LABS/LAB.2.3/include/TriangleMatrix.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QVariant \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qvariant.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qmetatype.h \

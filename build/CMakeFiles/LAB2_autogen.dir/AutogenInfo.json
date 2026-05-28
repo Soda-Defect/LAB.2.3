@@ -409,9 +409,27 @@
 			null
 		],
 		[
+			"D:/LABS/LAB.2.3/include/Matrix.h",
+			"MU",
+			"6YEA5652QU/moc_Matrix.cpp",
+			null
+		],
+		[
+			"D:/LABS/LAB.2.3/include/RectangularMatrix.h",
+			"MU",
+			"6YEA5652QU/moc_RectangularMatrix.cpp",
+			null
+		],
+		[
 			"D:/LABS/LAB.2.3/include/Sequence.h",
 			"MU",
 			"6YEA5652QU/moc_Sequence.cpp",
+			null
+		],
+		[
+			"D:/LABS/LAB.2.3/include/SquareMatrix.h",
+			"MU",
+			"6YEA5652QU/moc_SquareMatrix.cpp",
 			null
 		],
 		[
@@ -424,6 +442,12 @@
 			"D:/LABS/LAB.2.3/include/WindowInt.h",
 			"MU",
 			"6YEA5652QU/moc_WindowInt.cpp",
+			null
+		],
+		[
+			"D:/LABS/LAB.2.3/include/WindowMatrix.h",
+			"MU",
+			"6YEA5652QU/moc_WindowMatrix.cpp",
 			null
 		],
 		[
@@ -504,6 +528,7 @@
 	"SETTINGS_FILE" : "D:/LABS/LAB.2.3/build/CMakeFiles/LAB2_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[ "D:/LABS/LAB.2.3/src/WindowMatrix.cpp", "MU", null ],
 		[ "D:/LABS/LAB.2.3/src/main.cpp", "MU", null ],
 		[ "D:/LABS/LAB.2.3/src/test.cpp", "MU", null ]
 	],

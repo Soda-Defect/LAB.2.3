@@ -17,6 +17,7 @@ qt_add_executable(LAB2
     WIN32 MACOSX_BUNDLE
     src/main.cpp
     src/test.cpp
+    src/WindowMatrix.cpp
 )
 
 target_sources(LAB2 PRIVATE
@@ -30,7 +31,11 @@ target_sources(LAB2 PRIVATE
     include/Exceptions.h
     include/MapUtils.h
     include/test.h
+    include/Matrix.h
+    include/RectangularMatrix.h
+    include/SquareMatrix.h
     include/TriangleMatrix.h
+    include/WindowMatrix.h
 )
 
 target_link_libraries(LAB2

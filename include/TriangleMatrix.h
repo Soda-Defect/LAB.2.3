@@ -1,248 +1,208 @@
-#ifndef TRIANGLERMATRIX_H
-#define TRIANGLERMATRIX_H
+#ifndef TRIANGLE_MATRIX_H
+#define TRIANGLE_MATRIX_H
 
+#include "Matrix.h"
 #include "DynamicArray.h"
-#include <complex>
 #include <cmath>
-#include <stdexcept>
-#include <iostream>
-#include <type_traits>
+#include <complex>
 
 enum class MatrixType {
-    Upper,  
+    Upper,
     Lower
 };
 
 template<typename T>
-struct IsComplex : std::false_type {};
-
-template<typename T>
-struct IsComplex<std::complex<T>> : std::true_type {};
-
-template<typename T>
-class TriangleMatrix {
+class TriangleMatrix : public Matrix<T> {
 private:
-    DynamicArray<T> data;     
-    int n;                    
-    MatrixType type;          
+    int size;
+    MatrixType type;
+    DynamicArray<T> elements;
     
-    int getIndex(int row, int col) const;
+    int getIndex(int i, int j) const {
+        if (type == MatrixType::Upper) {
+            return i * size - i * (i - 1) / 2 + (j - i);
+        } else {
+            return i * (i + 1) / 2 + j;
+        }
+    }
     
-    int getNumElements() const { return n * (n + 1) / 2; }
+    bool isInTriangle(int i, int j) const {
+        if (type == MatrixType::Upper) {
+            return i <= j;
+        } else {
+            return i >= j;
+        }
+    }
     
 public:
-    TriangleMatrix();
-    TriangleMatrix(int size, MatrixType t = MatrixType::Upper);
-    TriangleMatrix(int size, const T& defaultValue, MatrixType t = MatrixType::Upper);
-    TriangleMatrix(const TriangleMatrix<T>& other);
-    TriangleMatrix(TriangleMatrix<T>&& other) noexcept;
+    TriangleMatrix() : size(0), type(MatrixType::Upper), elements() {}
+    
+    TriangleMatrix(int size, MatrixType type = MatrixType::Upper) 
+        : size(size), type(type) {
+        if (size < 0) {
+            throw SizeException("Matrix size cannot be negative");
+        }
+        int elemCount = size * (size + 1) / 2;
+        elements = DynamicArray<T>(elemCount, T());
+    }
+    
+    TriangleMatrix(const TriangleMatrix<T>& other) : size(other.size), type(other.type), elements(other.elements) {}
+    
+    TriangleMatrix(TriangleMatrix<T>&& other) noexcept : size(other.size), type(other.type), elements(std::move(other.elements)) {
+        other.size = 0;
+    }
     
     ~TriangleMatrix() = default;
     
-    TriangleMatrix<T>& operator=(const TriangleMatrix<T>& other);
-    TriangleMatrix<T>& operator=(TriangleMatrix<T>&& other) noexcept;
+    TriangleMatrix<T>& operator=(const TriangleMatrix<T>& other) {
+        if (this != &other) {
+            size = other.size;
+            type = other.type;
+            elements = other.elements;
+        }
+        return *this;
+    }
     
-    T get(int row, int col) const;
-    void set(int row, int col, const T& value);
+    TriangleMatrix<T>& operator=(TriangleMatrix<T>&& other) noexcept {
+        if (this != &other) {
+            size = other.size;
+            type = other.type;
+            elements = other.elements;
+            other.size = 0;
+        }
+        return *this;
+    }
     
-    T operator()(int row, int col) const;
+    int getRows() const override { return size; }
+    int getCols() const override { return size; }
     
-    int size() const { return n; }
+    T get(int i, int j) const override {
+        if (i < 0 || i >= size || j < 0 || j >= size) {
+            throw IndexOutOFBoundsException("Index out of bounds");
+        }
+        if (!isInTriangle(i, j)) {
+            return T();  
+        }
+        int idx = getIndex(i, j);
+        return elements.Get(idx);
+    }
+    
+    void set(int i, int j, const T& value) override {
+        if (i < 0 || i >= size || j < 0 || j >= size) {
+            throw IndexOutOFBoundsException("Index out of bounds");
+        }
+        if (!isInTriangle(i, j)) {
+            if (value != T()) {
+                throw IndexOutOFBoundsException(
+                    "Cannot set non-zero value outside triangular matrix"
+                );
+            }
+            return;  
+        }
+        int idx = getIndex(i, j);
+        elements.Set(idx, value);
+    }
+    
+    Matrix<T>* add(const Matrix<T>& other) const override {
+        const TriangleMatrix<T>* otherTri = dynamic_cast<const TriangleMatrix<T>*>(&other);
+        if (!otherTri) {
+            throw TypeException("Invalid matrix type for addition");
+        }
+        if (size != otherTri->size) {
+            throw SizeException("Matrices must have same size for addition");
+        }
+        if (type != otherTri->type) {
+            throw TypeException("Cannot add upper and lower triangular matrices");
+        }
+        
+        TriangleMatrix<T>* result = new TriangleMatrix<T>(size, type);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (isInTriangle(i, j)) {
+                    result->set(i, j, get(i, j) + otherTri->get(i, j));
+                }
+            }
+        }
+        return result;
+    }
+    
+    Matrix<T>* multiplyByScalar(const T& scalar) const override {
+        TriangleMatrix<T>* result = new TriangleMatrix<T>(size, type);
+        for (int i = 0; i < elements.GetSize(); i++) {
+            result->elements.Set(i, elements.Get(i) * scalar);
+        }
+        return result;
+    }
+    
+    double normL1() const override {
+        double maxColSum = 0.0;
+        for (int j = 0; j < size; j++) {
+            double colSum = 0.0;
+            for (int i = 0; i < size; i++) {
+                colSum += std::abs(get(i, j));
+            }
+            if (colSum > maxColSum) maxColSum = colSum;
+        }
+        return maxColSum;
+    }
+    
+    double normInf() const override {
+        double maxRowSum = 0.0;
+        for (int i = 0; i < size; i++) {
+            double rowSum = 0.0;
+            for (int j = 0; j < size; j++) {
+                rowSum += std::abs(get(i, j));
+            }
+            if (rowSum > maxRowSum) maxRowSum = rowSum;
+        }
+        return maxRowSum;
+    }
+    
+    double normL2() const override {
+        double sum = 0.0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                sum += std::abs(get(i, j)) * std::abs(get(i, j));
+            }
+        }
+        return std::sqrt(sum);
+    }
+    
+    void swapRows(int i, int j) override {
+        throw TypeException("swapRows is not supported for triangular matrix (would break triangular structure)");
+    }
+    
+    void multiplyRow(int i, const T& scalar) override {
+        throw TypeException("multiplyRow is not supported for triangular matrix");
+    }
+    
+    void addRowToRow(int source, int target, const T& scalar = T(1)) override {
+        throw TypeException("addRowToRow is not supported for triangular matrix");
+    }
+    
+    void swapCols(int i, int j) override {
+        throw TypeException("swapCols is not supported for triangular matrix");
+    }
+    
+    void multiplyCol(int j, const T& scalar) override {
+        throw TypeException("multiplyCol is not supported for triangular matrix");
+    }
+    
+    void addColToCol(int source, int target, const T& scalar = T(1)) override {
+        throw TypeException("addColToCol is not supported for triangular matrix");
+    }
+
+    int getSize() const { return size; }
     MatrixType getType() const { return type; }
-    bool isEmpty() const { return n == 0; }
     
-    TriangleMatrix<T> add(const TriangleMatrix<T>& other) const;
-    TriangleMatrix<T> multiplyByScalar(const T& scalar) const;
-    
-    double normL1() const;      // (максимум суммы по столбцам)
-    double normL2() const;      // Евклидова норма (Frobenius norm)
-    double normInf() const;      // (максимум суммы по строкам) 
-    
-    bool isSquare() const { return n > 0; }
+    void print() const {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                std::cout << get(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
 };
-
-template<typename T>
-int TriangleMatrix<T>::getIndex(int row, int col) const {
-    if (row < 0 || row >= n || col < 0 || col >= n) {
-        throw IndexOutOFBoundsException("Matrix index out of range");
-    }
-    
-    if (type == MatrixType::Upper) {
-        if (row > col){
-            return -1; 
-        }
-        int idx = 0;
-        for (int k = 0; k < row; k++) {
-            idx += (n - k);
-        }
-        return idx + (col - row);
-    } else { 
-        if (row < col){
-            return -1; 
-        }
-        int idx = 0;
-        for (int k = 0; k < row; k++) {
-            idx += (k + 1);
-        }
-        return idx + col;
-    }
-}
-
-template<typename T>
-TriangleMatrix<T>::TriangleMatrix() : n(0), type(MatrixType::Upper), data(DynamicArray<T>()) {}
-
-template<typename T>
-TriangleMatrix<T>::TriangleMatrix(int size, MatrixType t) : n(size), type(t) {
-    if (size < 0) {
-        throw SizeException("Matrix size cannot be negative");
-    }
-    int numElements = getNumElements();
-    data = DynamicArray<T>(numElements);
-}
-
-template<typename T>
-TriangleMatrix<T>::TriangleMatrix(int size, const T& defaultValue, MatrixType t) : n(size), type(t) {
-    if (size < 0) {
-        throw SizeException("Matrix size cannot be negative");
-    }
-    int numElements = getNumElements();
-    data = DynamicArray<T>(numElements, defaultValue);
-}
-
-template<typename T>
-TriangleMatrix<T>::TriangleMatrix(const TriangleMatrix<T>& other) : n(other.n), type(other.type), data(other.data) {}
-
-template<typename T>
-TriangleMatrix<T>::TriangleMatrix(TriangleMatrix<T>&& other) noexcept: n(other.n), type(other.type), data(std::move(other.data)) {
-    other.n = 0;
-}
-
-template<typename T>
-TriangleMatrix<T>& TriangleMatrix<T>::operator=(const TriangleMatrix<T>& other) {
-    if (this != &other) {
-        n = other.n;
-        type = other.type;
-        data = other.data;
-    }
-    return *this;
-}
-
-template<typename T>
-TriangleMatrix<T>& TriangleMatrix<T>::operator=(TriangleMatrix<T>&& other) noexcept {
-    if (this != &other) {
-        n = other.n;
-        type = other.type;
-        data = std::move(other.data);
-        other.n = 0;
-    }
-    return *this;
-}
-
-template<typename T>
-T TriangleMatrix<T>::get(int row, int col) const {
-    int idx = getIndex(row, col);
-    if (idx == -1){
-        return T();
-    }
-    return data.Get(idx);
-}
-
-template<typename T>
-void TriangleMatrix<T>::set(int row, int col, const T& value) {
-    int idx = getIndex(row, col);
-    if (idx == -1) {
-        if (value != T()) {
-            throw IndexOutOFBoundsException("Cannot set non-zero value in zero position of triangular matrix");
-        }
-        return;
-    }
-    data.Set(idx, value);
-}
-
-template<typename T>
-T TriangleMatrix<T>::operator()(int row, int col) const {
-    return get(row, col);
-}
-
-template<typename T>
-TriangleMatrix<T> TriangleMatrix<T>::add(const TriangleMatrix<T>& other) const {
-    if (n != other.n) {
-        throw SizeException("Matrix sizes do not match for addition");
-    }
-    if (type != other.type) {
-        throw TypeException("Matrix types (upper/lower) do not match for addition");
-    }
-    
-    TriangleMatrix<T> result(n, type);
-    for (int k = 0; k < data.GetSize(); k++) {
-        result.data.Set(k, data.Get(k) + other.data.Get(k));
-    }
-    return result;
-}
-
-template<typename T>
-TriangleMatrix<T> TriangleMatrix<T>::multiplyByScalar(const T& scalar) const {
-    TriangleMatrix<T> result(n, type);
-    for (int k = 0; k < data.GetSize(); k++) {
-        result.data.Set(k, data.Get(k) * scalar);
-    }
-    return result;
-}
-
-template<typename T>
-double TriangleMatrix<T>::normL1() const {
-    double maxSum = 0.0;
-    for (int j = 0; j < n; j++) {
-        double colSum = 0.0;
-        for (int i = 0; i < n; i++) {
-            T val = get(i, j);
-            if constexpr (IsComplex<T>::value) {
-                colSum += std::abs(val);
-            } else {
-                colSum += std::abs(static_cast<double>(val));
-            }
-        }
-        if (colSum > maxSum){
-            maxSum = colSum;
-        }
-    }
-    return maxSum;
-}
-
-template<typename T>
-double TriangleMatrix<T>::normL2() const {
-    double sumSquares = 0.0;
-    for (int k = 0; k < data.GetSize(); k++) {
-        const T& val = data.Get(k);
-        double absVal;
-        if constexpr (IsComplex<T>::value) {
-            absVal = std::abs(val);
-        } else {
-            absVal = std::abs(static_cast<double>(val));
-        }
-        sumSquares += absVal * absVal;
-    }
-    return std::sqrt(sumSquares);
-}
-
-template<typename T>
-double TriangleMatrix<T>::normInf() const {
-    double maxSum = 0.0;
-    for (int i = 0; i < n; i++) {
-        double rowSum = 0.0;
-        for (int j = 0; j < n; j++) {
-            T val = get(i, j);
-            if constexpr (IsComplex<T>::value) {
-                rowSum += std::abs(val);
-            } else {
-                rowSum += std::abs(static_cast<double>(val));
-            }
-        }
-        if (rowSum > maxSum){
-            maxSum = rowSum;
-        }
-    }
-    return maxSum;
-}
 
 #endif 

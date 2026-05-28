@@ -223,6 +223,30 @@ LAB2_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\LAB2.dir\build.make CMakeFiles/LAB2.dir/LAB2_autogen/mocs_compilation.cpp.s
 .PHONY : LAB2_autogen/mocs_compilation.cpp.s
 
+src/WindowMatrix.obj: src/WindowMatrix.cpp.obj
+.PHONY : src/WindowMatrix.obj
+
+# target to build an object file
+src/WindowMatrix.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\LAB2.dir\build.make CMakeFiles/LAB2.dir/src/WindowMatrix.cpp.obj
+.PHONY : src/WindowMatrix.cpp.obj
+
+src/WindowMatrix.i: src/WindowMatrix.cpp.i
+.PHONY : src/WindowMatrix.i
+
+# target to preprocess a source file
+src/WindowMatrix.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\LAB2.dir\build.make CMakeFiles/LAB2.dir/src/WindowMatrix.cpp.i
+.PHONY : src/WindowMatrix.cpp.i
+
+src/WindowMatrix.s: src/WindowMatrix.cpp.s
+.PHONY : src/WindowMatrix.s
+
+# target to generate assembly for a file
+src/WindowMatrix.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\LAB2.dir\build.make CMakeFiles/LAB2.dir/src/WindowMatrix.cpp.s
+.PHONY : src/WindowMatrix.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -289,6 +313,9 @@ help:
 	@echo ... LAB2_autogen/mocs_compilation.obj
 	@echo ... LAB2_autogen/mocs_compilation.i
 	@echo ... LAB2_autogen/mocs_compilation.s
+	@echo ... src/WindowMatrix.obj
+	@echo ... src/WindowMatrix.i
+	@echo ... src/WindowMatrix.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
