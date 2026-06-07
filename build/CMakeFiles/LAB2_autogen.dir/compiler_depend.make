@@ -299,6 +299,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/Qt/6.11.0/mingw_64/include/QtGui/qvalidator.h \
   D:/Qt/6.11.0/mingw_64/include/QtGui/qwindowdefs.h \
   D:/Qt/6.11.0/mingw_64/include/QtGui/qwindowdefs_win.h \
+  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QLabel \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QListWidget \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QMainWindow \
@@ -308,6 +309,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractslider.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qcombobox.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qframe.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlabel.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -517,6 +519,8 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/bits/allocator.h \
   D:/gcc/include/c++/14.2.0/bits/atomic_base.h \
   D:/gcc/include/c++/14.2.0/bits/atomic_lockfree_defines.h \
+  D:/gcc/include/c++/14.2.0/bits/basic_ios.h \
+  D:/gcc/include/c++/14.2.0/bits/basic_ios.tcc \
   D:/gcc/include/c++/14.2.0/bits/basic_string.h \
   D:/gcc/include/c++/14.2.0/bits/basic_string.tcc \
   D:/gcc/include/c++/14.2.0/bits/char_traits.h \
@@ -538,9 +542,12 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/bits/hashtable_policy.h \
   D:/gcc/include/c++/14.2.0/bits/invoke.h \
   D:/gcc/include/c++/14.2.0/bits/ios_base.h \
+  D:/gcc/include/c++/14.2.0/bits/istream.tcc \
   D:/gcc/include/c++/14.2.0/bits/list.tcc \
   D:/gcc/include/c++/14.2.0/bits/locale_classes.h \
   D:/gcc/include/c++/14.2.0/bits/locale_classes.tcc \
+  D:/gcc/include/c++/14.2.0/bits/locale_facets.h \
+  D:/gcc/include/c++/14.2.0/bits/locale_facets.tcc \
   D:/gcc/include/c++/14.2.0/bits/localefwd.h \
   D:/gcc/include/c++/14.2.0/bits/memory_resource.h \
   D:/gcc/include/c++/14.2.0/bits/memoryfwd.h \
@@ -548,6 +555,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/bits/nested_exception.h \
   D:/gcc/include/c++/14.2.0/bits/new_allocator.h \
   D:/gcc/include/c++/14.2.0/bits/node_handle.h \
+  D:/gcc/include/c++/14.2.0/bits/ostream.tcc \
   D:/gcc/include/c++/14.2.0/bits/ostream_insert.h \
   D:/gcc/include/c++/14.2.0/bits/parse_numbers.h \
   D:/gcc/include/c++/14.2.0/bits/postypes.h \
@@ -560,6 +568,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/bits/shared_ptr_atomic.h \
   D:/gcc/include/c++/14.2.0/bits/shared_ptr_base.h \
   D:/gcc/include/c++/14.2.0/bits/specfun.h \
+  D:/gcc/include/c++/14.2.0/bits/sstream.tcc \
   D:/gcc/include/c++/14.2.0/bits/std_abs.h \
   D:/gcc/include/c++/14.2.0/bits/std_function.h \
   D:/gcc/include/c++/14.2.0/bits/stl_algo.h \
@@ -606,6 +615,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/clocale \
   D:/gcc/include/c++/14.2.0/cmath \
   D:/gcc/include/c++/14.2.0/compare \
+  D:/gcc/include/c++/14.2.0/complex \
   D:/gcc/include/c++/14.2.0/concepts \
   D:/gcc/include/c++/14.2.0/cstddef \
   D:/gcc/include/c++/14.2.0/cstdint \
@@ -614,6 +624,7 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/cstring \
   D:/gcc/include/c++/14.2.0/ctime \
   D:/gcc/include/c++/14.2.0/cwchar \
+  D:/gcc/include/c++/14.2.0/cwctype \
   D:/gcc/include/c++/14.2.0/debug/assertions.h \
   D:/gcc/include/c++/14.2.0/debug/debug.h \
   D:/gcc/include/c++/14.2.0/exception \
@@ -626,7 +637,9 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/ext/type_traits.h \
   D:/gcc/include/c++/14.2.0/functional \
   D:/gcc/include/c++/14.2.0/initializer_list \
+  D:/gcc/include/c++/14.2.0/ios \
   D:/gcc/include/c++/14.2.0/iosfwd \
+  D:/gcc/include/c++/14.2.0/istream \
   D:/gcc/include/c++/14.2.0/iterator \
   D:/gcc/include/c++/14.2.0/limits \
   D:/gcc/include/c++/14.2.0/list \
@@ -635,11 +648,13 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/new \
   D:/gcc/include/c++/14.2.0/numeric \
   D:/gcc/include/c++/14.2.0/optional \
+  D:/gcc/include/c++/14.2.0/ostream \
   D:/gcc/include/c++/14.2.0/pstl/execution_defs.h \
   D:/gcc/include/c++/14.2.0/pstl/glue_numeric_defs.h \
   D:/gcc/include/c++/14.2.0/pstl/pstl_config.h \
   D:/gcc/include/c++/14.2.0/ratio \
   D:/gcc/include/c++/14.2.0/set \
+  D:/gcc/include/c++/14.2.0/sstream \
   D:/gcc/include/c++/14.2.0/stdexcept \
   D:/gcc/include/c++/14.2.0/stdlib.h \
   D:/gcc/include/c++/14.2.0/streambuf \
@@ -672,6 +687,8 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
+  D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
+  D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/error_constants.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr.h \
@@ -708,7 +725,8 @@ LAB2_autogen/timestamp: D:/Cmake/bin/cmake.exe \
   D:/gcc/x86_64-w64-mingw32/include/sys/timeb.h \
   D:/gcc/x86_64-w64-mingw32/include/time.h \
   D:/gcc/x86_64-w64-mingw32/include/vadefs.h \
-  D:/gcc/x86_64-w64-mingw32/include/wchar.h
+  D:/gcc/x86_64-w64-mingw32/include/wchar.h \
+  D:/gcc/x86_64-w64-mingw32/include/wctype.h
 
 
 D:/gcc/include/c++/14.2.0/bits/unordered_map.h:
@@ -752,6 +770,8 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicToolHelpers.cmake:
 D:/Cmake/share/cmake-4.3/Modules/CMakeCXXCompiler.cmake.in:
 
 D:/gcc/include/c++/14.2.0/string_view:
+
+D:/gcc/include/c++/14.2.0/istream:
 
 D:/Cmake/share/cmake-4.3/Modules/CMakeCXXCompilerABI.cpp:
 
@@ -987,6 +1007,8 @@ D:/Cmake/share/cmake-4.3/Modules/Compiler/PGI-DetermineCompiler.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomSystemDepHelpers.cmake:
 
+D:/gcc/include/c++/14.2.0/bits/ostream.tcc:
+
 D:/Cmake/share/cmake-4.3/Modules/Compiler/PathScale-DetermineCompiler.cmake:
 
 D:/Cmake/share/cmake-4.3/Modules/Compiler/Renesas-DetermineCompiler.cmake:
@@ -1135,6 +1157,8 @@ D:/gcc/include/c++/14.2.0/exception:
 
 CMakeFiles/4.3.2/CMakeCXXCompiler.cmake:
 
+D:/gcc/include/c++/14.2.0/ostream:
+
 CMakeFiles/4.3.2/CMakeRCCompiler.cmake:
 
 CMakeFiles/4.3.2/CMakeSystem.cmake:
@@ -1152,6 +1176,8 @@ D:/gcc/include/c++/14.2.0/bits/stl_set.h:
 D:/Qt/6.11.0/mingw_64/include/QtCore/qbindingstorage.h:
 
 D:/LABS/LAB.2.3/include/ArraySequence.h:
+
+D:/gcc/include/c++/14.2.0/bits/sstream.tcc:
 
 D:/LABS/LAB.2.3/include/DynamicArray.h:
 
@@ -1182,6 +1208,8 @@ D:/Qt/6.11.0/mingw_64/include/QtCore/qcontainerinfo.h:
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Gui/Qt6QICOPluginTargets.cmake:
 
 D:/LABS/LAB.2.3/include/TriangleMatrix.h:
+
+D:/gcc/include/c++/14.2.0/ios:
 
 D:/LABS/LAB.2.3/include/WindowInt.h:
 
@@ -1461,6 +1489,8 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake:
 
 D:/Qt/6.11.0/mingw_64/include/QtCore/qstringlist.h:
 
+D:/gcc/x86_64-w64-mingw32/include/wctype.h:
+
 D:/Qt/6.11.0/mingw_64/include/QtCore/qstringmatcher.h:
 
 D:/gcc/include/c++/14.2.0/bits/stl_function.h:
@@ -1585,6 +1615,8 @@ D:/gcc/include/c++/14.2.0/vector:
 
 D:/Qt/6.11.0/mingw_64/include/QtGui/qtgui-config.h:
 
+D:/gcc/include/c++/14.2.0/bits/basic_ios.tcc:
+
 D:/Qt/6.11.0/mingw_64/include/QtGui/qtguiglobal.h:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake:
@@ -1592,6 +1624,10 @@ D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake:
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfig.cmake:
 
 D:/Qt/6.11.0/mingw_64/include/QtGui/qwindowdefs_win.h:
+
+D:/gcc/include/c++/14.2.0/bits/stl_algo.h:
+
+D:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
 
@@ -1616,6 +1652,8 @@ D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractscrollarea.h:
 D:/gcc/x86_64-w64-mingw32/include/sec_api/wchar_s.h:
 
 D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractspinbox.h:
+
+D:/Qt/6.11.0/mingw_64/include/QtWidgets/qcombobox.h:
 
 D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlabel.h:
 
@@ -1679,9 +1717,9 @@ D:/gcc/include/c++/14.2.0/bits/shared_ptr_atomic.h:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake:
 
-D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake:
-
 D:/gcc/include/c++/14.2.0/bits/alloc_traits.h:
+
+D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6/QtPublicSbomCycloneDXHelpers.cmake:
 
@@ -1839,6 +1877,8 @@ D:/gcc/include/c++/14.2.0/cstdint:
 
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsVersionlessTargets.cmake:
 
+D:/gcc/include/c++/14.2.0/complex:
+
 D:/Qt/6.11.0/mingw_64/lib/cmake/Qt6Widgets/Qt6QModernWindowsStylePluginAdditionalTargetInfo.cmake:
 
 D:/gcc/include/c++/14.2.0/bits/stl_vector.h:
@@ -1895,6 +1935,8 @@ D:/gcc/include/c++/14.2.0/bits/align.h:
 
 D:/gcc/include/c++/14.2.0/bits/allocated_ptr.h:
 
+D:/gcc/include/c++/14.2.0/bits/basic_ios.h:
+
 D:/gcc/include/c++/14.2.0/bits/concept_check.h:
 
 D:/gcc/x86_64-w64-mingw32/include/sys/timeb.h:
@@ -1927,7 +1969,13 @@ D:/gcc/include/c++/14.2.0/bits/invoke.h:
 
 D:/gcc/include/c++/14.2.0/bits/ios_base.h:
 
+D:/gcc/include/c++/14.2.0/bits/istream.tcc:
+
 D:/gcc/include/c++/14.2.0/bits/locale_classes.tcc:
+
+D:/gcc/include/c++/14.2.0/bits/locale_facets.h:
+
+D:/gcc/include/c++/14.2.0/bits/locale_facets.tcc:
 
 D:/gcc/include/c++/14.2.0/bits/localefwd.h:
 
@@ -1949,8 +1997,6 @@ D:/gcc/include/c++/14.2.0/bits/requires_hosted.h:
 
 D:/gcc/include/c++/14.2.0/bits/std_abs.h:
 
-D:/gcc/include/c++/14.2.0/bits/stl_algo.h:
-
 D:/gcc/include/c++/14.2.0/bits/stl_bvector.h:
 
 D:/gcc/include/c++/14.2.0/bits/stl_construct.h:
@@ -1960,6 +2006,8 @@ D:/gcc/include/c++/14.2.0/bits/stl_heap.h:
 D:/gcc/include/c++/14.2.0/bits/stl_iterator.h:
 
 D:/gcc/include/c++/14.2.0/bits/stl_iterator_base_types.h:
+
+D:/gcc/include/c++/14.2.0/sstream:
 
 D:/gcc/include/c++/14.2.0/bits/stl_list.h:
 
@@ -2012,6 +2060,8 @@ D:/gcc/include/c++/14.2.0/iterator:
 D:/gcc/include/c++/14.2.0/cstring:
 
 D:/gcc/include/c++/14.2.0/ctime:
+
+D:/gcc/include/c++/14.2.0/cwctype:
 
 D:/gcc/include/c++/14.2.0/debug/assertions.h:
 
@@ -2086,6 +2136,10 @@ D:/gcc/include/c++/14.2.0/variant:
 D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/atomic_word.h:
 
 D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h:
+
+D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h:
+
+D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_inline.h:
 
 D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/error_constants.h:
 

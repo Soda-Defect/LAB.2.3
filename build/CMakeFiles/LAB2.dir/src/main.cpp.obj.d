@@ -418,6 +418,24 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.3\src\main.cpp \
  D:/Qt/6.11.0/mingw_64/include/QtGui/qpicture.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/qiodevice.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QMap \
+ D:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
+ D:/Qt/6.11.0/mingw_64/include/QtWidgets/qcombobox.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/complex \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cwctype \
+ D:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_base.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.tcc \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
+ D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc \
  D:/LABS/LAB.2.3/include/WindowTest.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QApplication \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qapplication.h \
@@ -451,8 +469,6 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.3\src\main.cpp \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QHBoxLayout \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QLineEdit \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlineedit.h \
- D:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
- D:/Qt/6.11.0/mingw_64/include/QtWidgets/qcombobox.h \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QInputDialog \
  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qinputdialog.h \
  D:/Qt/6.11.0/mingw_64/include/QtCore/QSet \
@@ -460,19 +476,6 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.3\src\main.cpp \
  D:/LABS/LAB.2.3/include/ArraySequence.h \
  D:/LABS/LAB.2.3/include/DynamicArray.h \
  D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.h \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.h \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cwctype \
- D:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_base.h \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.tcc \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
  D:/LABS/LAB.2.3/include/Exceptions.h D:/LABS/LAB.2.3/include/MapUtils.h \
  D:/LABS/LAB.2.3/include/ListSequence.h \
  D:/LABS/LAB.2.3/include/LinkedList.h D:/LABS/LAB.2.3/include/ZipUnzip.h \
@@ -485,6 +488,4 @@ CMakeFiles/LAB2.dir/src/main.cpp.obj: D:\LABS\LAB.2.3\src\main.cpp \
  D:/LABS/LAB.2.3/include/ListSequence.h \
  D:/LABS/LAB.2.3/include/Exceptions.h D:/LABS/LAB.2.3/include/ZipUnzip.h \
  D:/LABS/LAB.2.3/include/MapUtils.h \
- D:/Qt/6.11.0/mingw_64/include/QtCore/QString \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
- D:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc
+ D:/Qt/6.11.0/mingw_64/include/QtCore/QString

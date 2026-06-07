@@ -168,6 +168,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/Qt/6.11.0/mingw_64/include/QtGui/qvalidator.h \
   D:/Qt/6.11.0/mingw_64/include/QtGui/qwindowdefs.h \
   D:/Qt/6.11.0/mingw_64/include/QtGui/qwindowdefs_win.h \
+  D:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QLabel \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QListWidget \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/QMainWindow \
@@ -177,6 +178,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractslider.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  D:/Qt/6.11.0/mingw_64/include/QtWidgets/qcombobox.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qframe.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlabel.h \
   D:/Qt/6.11.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -207,6 +209,8 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/bits/allocator.h \
   D:/gcc/include/c++/14.2.0/bits/atomic_base.h \
   D:/gcc/include/c++/14.2.0/bits/atomic_lockfree_defines.h \
+  D:/gcc/include/c++/14.2.0/bits/basic_ios.h \
+  D:/gcc/include/c++/14.2.0/bits/basic_ios.tcc \
   D:/gcc/include/c++/14.2.0/bits/basic_string.h \
   D:/gcc/include/c++/14.2.0/bits/basic_string.tcc \
   D:/gcc/include/c++/14.2.0/bits/char_traits.h \
@@ -228,9 +232,12 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/bits/hashtable_policy.h \
   D:/gcc/include/c++/14.2.0/bits/invoke.h \
   D:/gcc/include/c++/14.2.0/bits/ios_base.h \
+  D:/gcc/include/c++/14.2.0/bits/istream.tcc \
   D:/gcc/include/c++/14.2.0/bits/list.tcc \
   D:/gcc/include/c++/14.2.0/bits/locale_classes.h \
   D:/gcc/include/c++/14.2.0/bits/locale_classes.tcc \
+  D:/gcc/include/c++/14.2.0/bits/locale_facets.h \
+  D:/gcc/include/c++/14.2.0/bits/locale_facets.tcc \
   D:/gcc/include/c++/14.2.0/bits/localefwd.h \
   D:/gcc/include/c++/14.2.0/bits/memory_resource.h \
   D:/gcc/include/c++/14.2.0/bits/memoryfwd.h \
@@ -238,6 +245,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/bits/nested_exception.h \
   D:/gcc/include/c++/14.2.0/bits/new_allocator.h \
   D:/gcc/include/c++/14.2.0/bits/node_handle.h \
+  D:/gcc/include/c++/14.2.0/bits/ostream.tcc \
   D:/gcc/include/c++/14.2.0/bits/ostream_insert.h \
   D:/gcc/include/c++/14.2.0/bits/parse_numbers.h \
   D:/gcc/include/c++/14.2.0/bits/postypes.h \
@@ -250,6 +258,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/bits/shared_ptr_atomic.h \
   D:/gcc/include/c++/14.2.0/bits/shared_ptr_base.h \
   D:/gcc/include/c++/14.2.0/bits/specfun.h \
+  D:/gcc/include/c++/14.2.0/bits/sstream.tcc \
   D:/gcc/include/c++/14.2.0/bits/std_abs.h \
   D:/gcc/include/c++/14.2.0/bits/std_function.h \
   D:/gcc/include/c++/14.2.0/bits/stl_algo.h \
@@ -296,6 +305,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/clocale \
   D:/gcc/include/c++/14.2.0/cmath \
   D:/gcc/include/c++/14.2.0/compare \
+  D:/gcc/include/c++/14.2.0/complex \
   D:/gcc/include/c++/14.2.0/concepts \
   D:/gcc/include/c++/14.2.0/cstddef \
   D:/gcc/include/c++/14.2.0/cstdint \
@@ -304,6 +314,7 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/cstring \
   D:/gcc/include/c++/14.2.0/ctime \
   D:/gcc/include/c++/14.2.0/cwchar \
+  D:/gcc/include/c++/14.2.0/cwctype \
   D:/gcc/include/c++/14.2.0/debug/assertions.h \
   D:/gcc/include/c++/14.2.0/debug/debug.h \
   D:/gcc/include/c++/14.2.0/exception \
@@ -316,7 +327,9 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/ext/type_traits.h \
   D:/gcc/include/c++/14.2.0/functional \
   D:/gcc/include/c++/14.2.0/initializer_list \
+  D:/gcc/include/c++/14.2.0/ios \
   D:/gcc/include/c++/14.2.0/iosfwd \
+  D:/gcc/include/c++/14.2.0/istream \
   D:/gcc/include/c++/14.2.0/iterator \
   D:/gcc/include/c++/14.2.0/limits \
   D:/gcc/include/c++/14.2.0/list \
@@ -325,11 +338,13 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/new \
   D:/gcc/include/c++/14.2.0/numeric \
   D:/gcc/include/c++/14.2.0/optional \
+  D:/gcc/include/c++/14.2.0/ostream \
   D:/gcc/include/c++/14.2.0/pstl/execution_defs.h \
   D:/gcc/include/c++/14.2.0/pstl/glue_numeric_defs.h \
   D:/gcc/include/c++/14.2.0/pstl/pstl_config.h \
   D:/gcc/include/c++/14.2.0/ratio \
   D:/gcc/include/c++/14.2.0/set \
+  D:/gcc/include/c++/14.2.0/sstream \
   D:/gcc/include/c++/14.2.0/stdexcept \
   D:/gcc/include/c++/14.2.0/stdlib.h \
   D:/gcc/include/c++/14.2.0/streambuf \
@@ -362,6 +377,8 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
+  D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
+  D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/error_constants.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
   D:/gcc/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr.h \
@@ -398,4 +415,5 @@ D:/LABS/LAB.2.3/build/LAB2_autogen/6YEA5652QU/moc_WindowMatrix.cpp: D:/LABS/LAB.
   D:/gcc/x86_64-w64-mingw32/include/sys/timeb.h \
   D:/gcc/x86_64-w64-mingw32/include/time.h \
   D:/gcc/x86_64-w64-mingw32/include/vadefs.h \
-  D:/gcc/x86_64-w64-mingw32/include/wchar.h
+  D:/gcc/x86_64-w64-mingw32/include/wchar.h \
+  D:/gcc/x86_64-w64-mingw32/include/wctype.h

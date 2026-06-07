@@ -14,6 +14,74 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QScrollArea>
+#include <QRegularExpression>
+
+// ==================== MatrixWrapper implementation ====================
+
+MatrixWrapper::MatrixWrapper() : dataType(DataType::Int), matrix(std::unique_ptr<Matrix<int>>(nullptr)) {}
+
+MatrixWrapper::MatrixWrapper(Matrix<int>* m) : dataType(DataType::Int), matrix(std::unique_ptr<Matrix<int>>(m)) {}
+
+MatrixWrapper::MatrixWrapper(Matrix<double>* m) : dataType(DataType::Double), matrix(std::unique_ptr<Matrix<double>>(m)) {}
+
+MatrixWrapper::MatrixWrapper(Matrix<std::complex<double>>* m) : dataType(DataType::Complex), matrix(std::unique_ptr<Matrix<std::complex<double>>>(m)) {}
+
+bool MatrixWrapper::isValid() const {
+    return std::visit([](const auto& ptr) { return ptr != nullptr; }, matrix);
+}
+
+int MatrixWrapper::getRows() const {
+    return std::visit([](const auto& ptr) -> int { 
+        return ptr ? ptr->getRows() : 0; 
+    }, matrix);
+}
+
+int MatrixWrapper::getCols() const {
+    return std::visit([](const auto& ptr) -> int { 
+        return ptr ? ptr->getCols() : 0; 
+    }, matrix);
+}
+
+QString MatrixWrapper::getTypeString() const {
+    QString dataTypeStr;
+    switch (dataType) {
+        case DataType::Int: dataTypeStr = "int"; break;
+        case DataType::Double: dataTypeStr = "double"; break;
+        case DataType::Complex: dataTypeStr = "complex"; break;
+    }
+    
+    QString matrixTypeStr = std::visit([this](const auto& ptr) -> QString {
+        if (!ptr) return "Unknown";
+        
+        if (dataType == DataType::Int) {
+            auto* mat = dynamic_cast<const RectangularMatrix<int>*>(ptr.get());
+            if (mat) return "Rectangular";
+            auto* sq = dynamic_cast<const SquareMatrix<int>*>(ptr.get());
+            if (sq) return "Square";
+            auto* tri = dynamic_cast<const TriangleMatrix<int>*>(ptr.get());
+            if (tri) return tri->getType() == MatrixType::Upper ? "UpperTriangular" : "LowerTriangular";
+        } else if (dataType == DataType::Double) {
+            auto* mat = dynamic_cast<const RectangularMatrix<double>*>(ptr.get());
+            if (mat) return "Rectangular";
+            auto* sq = dynamic_cast<const SquareMatrix<double>*>(ptr.get());
+            if (sq) return "Square";
+            auto* tri = dynamic_cast<const TriangleMatrix<double>*>(ptr.get());
+            if (tri) return tri->getType() == MatrixType::Upper ? "UpperTriangular" : "LowerTriangular";
+        } else {
+            auto* mat = dynamic_cast<const RectangularMatrix<std::complex<double>>*>(ptr.get());
+            if (mat) return "Rectangular";
+            auto* sq = dynamic_cast<const SquareMatrix<std::complex<double>>*>(ptr.get());
+            if (sq) return "Square";
+            auto* tri = dynamic_cast<const TriangleMatrix<std::complex<double>>*>(ptr.get());
+            if (tri) return tri->getType() == MatrixType::Upper ? "UpperTriangular" : "LowerTriangular";
+        }
+        return "Unknown";
+    }, matrix);
+    
+    return QString("%1 (%2)").arg(matrixTypeStr).arg(dataTypeStr);
+}
+
+// ==================== MainWindowMatrix implementation ====================
 
 MainWindowMatrix::MainWindowMatrix(QWidget *parent) 
     : QMainWindow(parent), currentMatrix(nullptr) {
@@ -22,7 +90,7 @@ MainWindowMatrix::MainWindowMatrix(QWidget *parent)
 }
 
 MainWindowMatrix::~MainWindowMatrix() {
-    for (auto mat : matrices) {
+    for (auto* mat : matrices) {
         delete mat;
     }
 }
@@ -43,8 +111,324 @@ void MainWindowMatrix::showInfo(const QString& message) {
     msgBox.exec();
 }
 
+template<typename T>
+QString MainWindowMatrix::valueToString(const T& value) const {
+    if constexpr (std::is_same_v<T, int>) {
+        return QString::number(value);
+    } else if constexpr (std::is_same_v<T, double>) {
+        return QString::number(value, 'g', 6);
+    } else if constexpr (std::is_same_v<T, std::complex<double>>) {
+        return QString("(%1,%2)").arg(value.real(), 0, 'g', 6).arg(value.imag(), 0, 'g', 6);
+    }
+    return QString();
+}
+
+template<typename T>
+T MainWindowMatrix::parseValue(const QString& str) const {
+    if constexpr (std::is_same_v<T, int>) {
+        return str.toInt();
+    } else if constexpr (std::is_same_v<T, double>) {
+        return str.toDouble();
+    } else if constexpr (std::is_same_v<T, std::complex<double>>) {
+        QRegularExpression re1(R"(^\s*\(?\s*([+-]?\d*\.?\d+)\s*[,;]\s*([+-]?\d*\.?\d+)\s*\)?\s*$)");
+        QRegularExpression re2(R"(^\s*([+-]?\d*\.?\d+)\s*([+-]\d*\.?\d*)i?\s*$)");
+        QRegularExpression re3(R"(^\s*([+-]?\d*\.?\d+)\s*$)");
+        
+        double re = 0, im = 0;
+        
+        auto match1 = re1.match(str);
+        if (match1.hasMatch()) {
+            re = match1.captured(1).toDouble();
+            im = match1.captured(2).toDouble();
+        } else {
+            auto match2 = re2.match(str);
+            if (match2.hasMatch()) {
+                re = match2.captured(1).toDouble();
+                im = match2.captured(2).toDouble();
+            } else {
+                auto match3 = re3.match(str);
+                if (match3.hasMatch()) {
+                    re = match3.captured(1).toDouble();
+                    im = 0;
+                } else {
+                    re = str.toDouble();
+                    im = 0;
+                }
+            }
+        }
+        return std::complex<double>(re, im);
+    }
+    return T();
+}
+
+template<typename T>
+void MainWindowMatrix::fillMatrixDialog(Matrix<T>* mat, int rows, int cols) {
+    // Пытаемся определить, является ли матрица треугольной
+    bool isTriangular = false;
+    bool isUpper = false;
+    
+    if (auto* tri = dynamic_cast<TriangleMatrix<T>*>(mat)) {
+        isTriangular = true;
+        isUpper = (tri->getType() == MatrixType::Upper);
+    }
+    
+    int fill = QMessageBox::question(this, "ЗАПОЛНЕНИЕ", 
+        "ЗАПОЛНИТЬ МАТРИЦУ ЗНАЧЕНИЯМИ ПО УМОЛЧАНИЮ?", 
+        QMessageBox::Yes | QMessageBox::No);
+    
+    if (fill == QMessageBox::Yes) {
+        QString defaultStr = QInputDialog::getText(this, "ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ", 
+            "ВВЕДИТЕ ЗНАЧЕНИЕ (для комплексных: a+bi или a,b):", QLineEdit::Normal, "0");
+        T def = parseValue<T>(defaultStr);
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (isTriangular) {
+                    // Для треугольной матрицы заполняем только треугольную область
+                    if (isUpper) {
+                        if (i <= j) mat->set(i, j, def);
+                    } else {
+                        if (i >= j) mat->set(i, j, def);
+                    }
+                } else {
+                    mat->set(i, j, def);
+                }
+            }
+        }
+        showInfo(isTriangular ? 
+            "ЗАПОЛНЕНЫ ТОЛЬКО ЭЛЕМЕНТЫ В ТРЕУГОЛЬНОЙ ОБЛАСТИ" : 
+            "МАТРИЦА ЗАПОЛНЕНА");
+    } else {
+        // Для ручного ввода показываем только доступные для заполнения позиции
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // Пропускаем недоступные позиции в треугольной матрице
+                if (isTriangular) {
+                    if (isUpper && i > j) continue;
+                    if (!isUpper && i < j) continue;
+                }
+                
+                QString currentValueStr;
+                try {
+                    currentValueStr = valueToString(mat->get(i, j));
+                } catch (...) {
+                    currentValueStr = "0";
+                }
+                
+                bool ok;
+                QString valStr = QInputDialog::getText(this, "ВВОД ЭЛЕМЕНТА", 
+                    QString("ЭЛЕМЕНТ [%1][%2]:").arg(i).arg(j), 
+                    QLineEdit::Normal, currentValueStr, &ok);
+                if (!ok) continue;
+                
+                T val = parseValue<T>(valStr);
+                
+                // Для треугольной матрицы разрешаем вводить только 0 вне треугольника
+                if (isTriangular) {
+                    if ((isUpper && i <= j) || (!isUpper && i >= j)) {
+                        mat->set(i, j, val);
+                    } else if (val != T()) {
+                        QMessageBox::warning(this, "ПРЕДУПРЕЖДЕНИЕ", 
+                            QString("ЭЛЕМЕНТ [%1][%2] НАХОДИТСЯ ВНЕ ТРЕУГОЛЬНОЙ ОБЛАСТИ.\n"
+                                    "БУДЕТ УСТАНОВЛЕН В 0.").arg(i).arg(j));
+                        mat->set(i, j, T());
+                    }
+                } else {
+                    mat->set(i, j, val);
+                }
+            }
+        }
+    }
+}
+
+MatrixWrapper* MainWindowMatrix::createMatrixByType(DataType dataType, int matrixType, int rows, int cols) {
+    switch (dataType) {
+        case DataType::Int: {
+            switch (matrixType) {
+                case 0: return new MatrixWrapper(new RectangularMatrix<int>(rows, cols));
+                case 1: return new MatrixWrapper(new SquareMatrix<int>(rows));
+                case 2: return new MatrixWrapper(new TriangleMatrix<int>(rows, MatrixType::Upper));
+                case 3: return new MatrixWrapper(new TriangleMatrix<int>(rows, MatrixType::Lower));
+            }
+            break;
+        }
+        case DataType::Double: {
+            switch (matrixType) {
+                case 0: return new MatrixWrapper(new RectangularMatrix<double>(rows, cols));
+                case 1: return new MatrixWrapper(new SquareMatrix<double>(rows));
+                case 2: return new MatrixWrapper(new TriangleMatrix<double>(rows, MatrixType::Upper));
+                case 3: return new MatrixWrapper(new TriangleMatrix<double>(rows, MatrixType::Lower));
+            }
+            break;
+        }
+        case DataType::Complex: {
+            switch (matrixType) {
+                case 0: return new MatrixWrapper(new RectangularMatrix<std::complex<double>>(rows, cols));
+                case 1: return new MatrixWrapper(new SquareMatrix<std::complex<double>>(rows));
+                case 2: return new MatrixWrapper(new TriangleMatrix<std::complex<double>>(rows, MatrixType::Upper));
+                case 3: return new MatrixWrapper(new TriangleMatrix<std::complex<double>>(rows, MatrixType::Lower));
+            }
+            break;
+        }
+    }
+    return nullptr;
+}
+
+void MainWindowMatrix::displayMatrixInt(Matrix<int>* mat, int rows, int cols, QString& display) {
+    int maxWidth = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            if (val.length() > maxWidth) maxWidth = val.length();
+        }
+    }
+    maxWidth = qMin(maxWidth, 20);
+    
+    for (int i = 0; i < rows; i++) {
+        display += "[ ";
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            display += QString("%1").arg(val, maxWidth);
+            if (j < cols - 1) display += " ";
+        }
+        display += " ]\n";
+    }
+}
+
+void MainWindowMatrix::displayMatrixDouble(Matrix<double>* mat, int rows, int cols, QString& display) {
+    int maxWidth = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            if (val.length() > maxWidth) maxWidth = val.length();
+        }
+    }
+    maxWidth = qMin(maxWidth, 20);
+    
+    for (int i = 0; i < rows; i++) {
+        display += "[ ";
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            display += QString("%1").arg(val, maxWidth);
+            if (j < cols - 1) display += " ";
+        }
+        display += " ]\n";
+    }
+}
+
+void MainWindowMatrix::displayMatrixComplex(Matrix<std::complex<double>>* mat, int rows, int cols, QString& display) {
+    int maxWidth = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            if (val.length() > maxWidth) maxWidth = val.length();
+        }
+    }
+    maxWidth = qMin(maxWidth, 20);
+    
+    for (int i = 0; i < rows; i++) {
+        display += "[ ";
+        for (int j = 0; j < cols; j++) {
+            QString val = valueToString(mat->get(i, j));
+            display += QString("%1").arg(val, maxWidth);
+            if (j < cols - 1) display += " ";
+        }
+        display += " ]\n";
+    }
+}
+
+void MainWindowMatrix::editElementInt(int i, int j, Matrix<int>* mat) {
+    int currentValue = mat->get(i, j);
+    QString currentStr = valueToString(currentValue);
+    QString newStr = QInputDialog::getText(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
+        QString("ВВЕДИТЕ НОВОЕ ЗНАЧЕНИЕ ДЛЯ ЭЛЕМЕНТА [%1][%2]:").arg(i).arg(j),
+        QLineEdit::Normal, currentStr);
+    if (!newStr.isEmpty()) {
+        int newValue = parseValue<int>(newStr);
+        mat->set(i, j, newValue);
+        updateCurrentDisplay();
+        showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+    }
+}
+
+void MainWindowMatrix::editElementDouble(int i, int j, Matrix<double>* mat) {
+    double currentValue = mat->get(i, j);
+    QString currentStr = valueToString(currentValue);
+    QString newStr = QInputDialog::getText(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
+        QString("ВВЕДИТЕ НОВОЕ ЗНАЧЕНИЕ ДЛЯ ЭЛЕМЕНТА [%1][%2]:").arg(i).arg(j),
+        QLineEdit::Normal, currentStr);
+    if (!newStr.isEmpty()) {
+        double newValue = parseValue<double>(newStr);
+        mat->set(i, j, newValue);
+        updateCurrentDisplay();
+        showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+    }
+}
+
+void MainWindowMatrix::editElementComplex(int i, int j, Matrix<std::complex<double>>* mat) {
+    auto currentValue = mat->get(i, j);
+    QString currentStr = valueToString(currentValue);
+    QString newStr = QInputDialog::getText(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
+        QString("ВВЕДИТЕ НОВОЕ ЗНАЧЕНИЕ ДЛЯ ЭЛЕМЕНТА [%1][%2]:").arg(i).arg(j),
+        QLineEdit::Normal, currentStr);
+    if (!newStr.isEmpty()) {
+        auto newValue = parseValue<std::complex<double>>(newStr);
+        mat->set(i, j, newValue);
+        updateCurrentDisplay();
+        showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+    }
+}
+
+MatrixWrapper* MainWindowMatrix::addMatrices(MatrixWrapper* a, MatrixWrapper* b) {
+    if (a->dataType != b->dataType) return nullptr;
+    
+    if (a->dataType == DataType::Int) {
+        auto* matA = std::get<std::unique_ptr<Matrix<int>>>(a->matrix).get();
+        auto* matB = std::get<std::unique_ptr<Matrix<int>>>(b->matrix).get();
+        if (matA && matB) {
+            return new MatrixWrapper(matA->add(*matB));
+        }
+    } else if (a->dataType == DataType::Double) {
+        auto* matA = std::get<std::unique_ptr<Matrix<double>>>(a->matrix).get();
+        auto* matB = std::get<std::unique_ptr<Matrix<double>>>(b->matrix).get();
+        if (matA && matB) {
+            return new MatrixWrapper(matA->add(*matB));
+        }
+    } else {
+        auto* matA = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(a->matrix).get();
+        auto* matB = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(b->matrix).get();
+        if (matA && matB) {
+            return new MatrixWrapper(matA->add(*matB));
+        }
+    }
+    return nullptr;
+}
+
+MatrixWrapper* MainWindowMatrix::multiplyByScalar(MatrixWrapper* mat, const QString& scalarStr) {
+    if (mat->dataType == DataType::Int) {
+        auto* m = std::get<std::unique_ptr<Matrix<int>>>(mat->matrix).get();
+        if (m) {
+            int scalar = parseValue<int>(scalarStr);
+            return new MatrixWrapper(m->multiplyByScalar(scalar));
+        }
+    } else if (mat->dataType == DataType::Double) {
+        auto* m = std::get<std::unique_ptr<Matrix<double>>>(mat->matrix).get();
+        if (m) {
+            double scalar = parseValue<double>(scalarStr);
+            return new MatrixWrapper(m->multiplyByScalar(scalar));
+        }
+    } else {
+        auto* m = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(mat->matrix).get();
+        if (m) {
+            auto scalar = parseValue<std::complex<double>>(scalarStr);
+            return new MatrixWrapper(m->multiplyByScalar(scalar));
+        }
+    }
+    return nullptr;
+}
+
 void MainWindowMatrix::setupUI() {
-    resize(950, 750);
+    resize(1000, 800);
     
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
@@ -52,6 +436,15 @@ void MainWindowMatrix::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(central);
     mainLayout->setSpacing(10);
     mainLayout->setContentsMargins(10, 10, 10, 10);
+    
+    // Панель выбора типа данных
+    QHBoxLayout *typeLayout = new QHBoxLayout;
+    typeLayout->addWidget(new QLabel("Тип данных:"));
+    comboDataType = new QComboBox;
+    comboDataType->addItems({"int (целые)", "double (вещественные)", "complex (комплексные)"});
+    typeLayout->addWidget(comboDataType);
+    typeLayout->addStretch();
+    mainLayout->addLayout(typeLayout);
     
     // Верхняя панель - список и отображение
     QHBoxLayout *topLayout = new QHBoxLayout;
@@ -101,9 +494,9 @@ void MainWindowMatrix::setupUI() {
     labelInfo = new QLabel("РАЗМЕР: -");
     labelNormResult = new QLabel("НОРМЫ: НЕ ВЫЧИСЛЕНЫ");
     
-    labelCurrent->setMinimumWidth(220);
+    labelCurrent->setMinimumWidth(280);
     labelInfo->setMinimumWidth(150);
-    labelNormResult->setMinimumWidth(220);
+    labelNormResult->setMinimumWidth(250);
     
     infoLayout->addWidget(labelCurrent);
     infoLayout->addWidget(labelInfo);
@@ -238,85 +631,60 @@ void MainWindowMatrix::setupUI() {
     connect(btnAddRow, &QPushButton::clicked, this, &MainWindowMatrix::onAddRowToRow);
     connect(btnAddCol, &QPushButton::clicked, this, &MainWindowMatrix::onAddColToCol);
     
-    // ========== ЧЁРНО-БЕЛАЯ СТИЛИЗАЦИЯ ==========
+    // Стилизация
     this->setStyleSheet(
         "QMainWindow { background-color: black; }"
-        
         "QGroupBox { color: white; border: 2px solid white; border-radius: 5px; margin-top: 12px; font-weight: bold; }"
         "QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px 0 5px; color: white; }"
-        
         "QPushButton { background-color: black; color: white; border: 2px solid white; border-radius: 5px; padding: 6px; font-weight: bold; }"
         "QPushButton:hover { background-color: white; color: black; }"
         "QPushButton:pressed { background-color: #666666; color: white; }"
-        
         "QLabel { color: white; background-color: black; font-weight: bold; }"
-        
         "QTextEdit { background-color: black; color: white; border: 2px solid white; border-radius: 3px; font-family: 'Courier New'; }"
-        
         "QListWidget { background-color: black; color: white; border: 2px solid white; border-radius: 3px; }"
         "QListWidget::item:selected { background-color: white; color: black; }"
         "QListWidget::item:hover { background-color: #333333; color: white; }"
-        
         "QTabWidget::pane { background-color: black; border: 2px solid white; border-radius: 3px; }"
         "QTabBar::tab { background-color: black; color: white; padding: 8px 15px; margin-right: 2px; border: 2px solid white; border-bottom: none; }"
         "QTabBar::tab:selected { background-color: white; color: black; }"
         "QTabBar::tab:hover { background-color: #333333; color: white; }"
-        
-        "QScrollArea { background-color: black; border: none; }"
-        "QScrollBar:vertical { background-color: black; width: 10px; margin: 0px; }"
-        "QScrollBar::handle:vertical { background-color: white; min-height: 20px; }"
-        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { background-color: black; }"
-        
-        "QMessageBox { background-color: black; }"
-        "QMessageBox QLabel { color: white; background-color: black; }"
-        "QMessageBox QPushButton { background-color: black; color: white; border: 2px solid white; min-width: 80px; }"
-        "QMessageBox QPushButton:hover { background-color: white; color: black; }"
-        
-        "QInputDialog { background-color: black; }"
-        "QInputDialog QLabel { color: white; background-color: black; }"
-        "QInputDialog QLineEdit { background-color: black; color: white; border: 2px solid white; }"
-        "QInputDialog QPushButton { background-color: black; color: white; border: 2px solid white; }"
-        "QInputDialog QPushButton:hover { background-color: white; color: black; }"
+        "QComboBox { background-color: black; color: white; border: 2px solid white; border-radius: 3px; padding: 5px; }"
+        "QComboBox::drop-down { border: none; }"
+        "QComboBox::down-arrow { image: none; border: none; }"
+        "QComboBox QAbstractItemView { background-color: black; color: white; border: 2px solid white; }"
     );
 }
 
 void MainWindowMatrix::updateMatrixList() {
     listMatrices->clear();
-    for (const QString& name : matrices.keys()) {
-        listMatrices->addItem(name);
+    for (auto it = matrices.begin(); it != matrices.end(); ++it) {
+        listMatrices->addItem(it.key());
     }
 }
 
 void MainWindowMatrix::updateCurrentDisplay() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         textDisplay->setPlainText("МАТРИЦА НЕ ВЫБРАНА");
         return;
     }
     
-    QString display;
     int rows = currentMatrix->getRows();
     int cols = currentMatrix->getCols();
     
-    display += QString("ТИП: %1\n").arg(matrixTypeToString(currentMatrix));
+    QString display;
+    display += QString("ТИП: %1\n").arg(currentMatrix->getTypeString());
     display += QString("РАЗМЕР: %1 x %2\n\n").arg(rows).arg(cols);
     
-    // Находим максимальную ширину числа для выравнивания
-    int maxWidth = 0;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            QString val = QString::number(currentMatrix->get(i, j));
-            if (val.length() > maxWidth) maxWidth = val.length();
-        }
-    }
-    maxWidth = qMin(maxWidth, 12);
-    
-    for (int i = 0; i < rows; i++) {
-        display += "[ ";
-        for (int j = 0; j < cols; j++) {
-            display += QString("%1").arg(currentMatrix->get(i, j), maxWidth);
-            if (j < cols - 1) display += " ";
-        }
-        display += " ]\n";
+    // Отображаем матрицу в зависимости от типа
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (mat) displayMatrixInt(mat, rows, cols, display);
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (mat) displayMatrixDouble(mat, rows, cols, display);
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (mat) displayMatrixComplex(mat, rows, cols, display);
     }
     
     textDisplay->setPlainText(display);
@@ -324,7 +692,7 @@ void MainWindowMatrix::updateCurrentDisplay() {
 }
 
 void MainWindowMatrix::updateInfo() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         labelInfo->setText("РАЗМЕР: -");
         return;
     }
@@ -333,49 +701,36 @@ void MainWindowMatrix::updateInfo() {
     labelInfo->setText(QString("РАЗМЕР: %1 x %2").arg(rows).arg(cols));
 }
 
-QString MainWindowMatrix::matrixTypeToString(Matrix<double>* mat) {
-    if (dynamic_cast<SquareMatrix<double>*>(mat)) {
-        return "КВАДРАТНАЯ МАТРИЦА";
-    } else if (dynamic_cast<TriangleMatrix<double>*>(mat)) {
-        TriangleMatrix<double>* tri = dynamic_cast<TriangleMatrix<double>*>(mat);
-        if (tri->getType() == MatrixType::Upper) {
-            return "ВЕРХНЕТРЕУГОЛЬНАЯ МАТРИЦА";
-        } else {
-            return "НИЖНЕТРЕУГОЛЬНАЯ МАТРИЦА";
-        }
-    }
-    return "ПРЯМОУГОЛЬНАЯ МАТРИЦА";
-}
-
-Matrix<double>* MainWindowMatrix::createMatrixByType(int type, int rows, int cols) {
-    switch (type) {
-        case 0: return new RectangularMatrix<double>(rows, cols);
-        case 1: return new SquareMatrix<double>(rows);
-        case 2: return new TriangleMatrix<double>(rows, MatrixType::Upper);
-        case 3: return new TriangleMatrix<double>(rows, MatrixType::Lower);
-        default: return nullptr;
-    }
-}
-
 // ==================== СЛОТЫ ====================
 
 void MainWindowMatrix::onCreateMatrix() {
-    QStringList types = {"ПРЯМОУГОЛЬНАЯ МАТРИЦА", "КВАДРАТНАЯ МАТРИЦА", "ВЕРХНЕТРЕУГОЛЬНАЯ МАТРИЦА", "НИЖНЕТРЕУГОЛЬНАЯ МАТРИЦА"};
+    // Выбор типа матрицы
+    QStringList matrixTypes = {"ПРЯМОУГОЛЬНАЯ", "КВАДРАТНАЯ", "ВЕРХНЕТРЕУГОЛЬНАЯ", "НИЖНЕТРЕУГОЛЬНАЯ"};
     bool ok;
-    QString typeStr = QInputDialog::getItem(this, "ТИП МАТРИЦЫ", "ВЫБЕРИТЕ ТИП МАТРИЦЫ:", types, 0, false, &ok);
+    QString typeStr = QInputDialog::getItem(this, "ТИП МАТРИЦЫ", "ВЫБЕРИТЕ ТИП МАТРИЦЫ:", matrixTypes, 0, false, &ok);
     if (!ok) return;
-    int type = types.indexOf(typeStr);
+    
+    int matrixType = matrixTypes.indexOf(typeStr);
+    
+    // Выбор типа данных
+    DataType dataType;
+    int dataTypeIndex = comboDataType->currentIndex();
+    switch (dataTypeIndex) {
+        case 0: dataType = DataType::Int; break;
+        case 1: dataType = DataType::Double; break;
+        default: dataType = DataType::Complex; break;
+    }
     
     int rows = QInputDialog::getInt(this, "РАЗМЕР", "КОЛИЧЕСТВО СТРОК:", 2, 1, 10, 1, &ok);
     if (!ok) return;
     
     int cols = rows;
-    if (type == 0) {
+    if (matrixType == 0) {
         cols = QInputDialog::getInt(this, "РАЗМЕР", "КОЛИЧЕСТВО СТОЛБЦОВ:", 2, 1, 10, 1, &ok);
         if (!ok) return;
     }
     
-    if ((type == 1 || type == 2 || type == 3) && rows != cols) {
+    if ((matrixType == 1 || matrixType == 2 || matrixType == 3) && rows != cols) {
         showError("КВАДРАТНАЯ/ТРЕУГОЛЬНАЯ МАТРИЦА ДОЛЖНА БЫТЬ КВАДРАТНОЙ");
         return;
     }
@@ -386,39 +741,41 @@ void MainWindowMatrix::onCreateMatrix() {
         return;
     }
     
-    Matrix<double>* mat = createMatrixByType(type, rows, cols);
-    if (!mat) return;
-    
-    int fill = QMessageBox::question(this, "ЗАПОЛНЕНИЕ", "ЗАПОЛНИТЬ МАТРИЦУ ЗНАЧЕНИЯМИ?", QMessageBox::Yes | QMessageBox::No);
-    
-    if (fill == QMessageBox::Yes) {
-        double defValue = QInputDialog::getDouble(this, "ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ", "ВВЕДИТЕ ЗНАЧЕНИЕ:", 0);
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                mat->set(i, j, defValue);
+    try {
+        MatrixWrapper* wrapper = createMatrixByType(dataType, matrixType, rows, cols);
+        if (wrapper && wrapper->isValid()) {
+            // Заполняем матрицу значениями
+            if (dataType == DataType::Int) {
+                auto* mat = std::get<std::unique_ptr<Matrix<int>>>(wrapper->matrix).get();
+                fillMatrixDialog(mat, rows, cols);
+            } else if (dataType == DataType::Double) {
+                auto* mat = std::get<std::unique_ptr<Matrix<double>>>(wrapper->matrix).get();
+                fillMatrixDialog(mat, rows, cols);
+            } else {
+                auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(wrapper->matrix).get();
+                fillMatrixDialog(mat, rows, cols);
             }
+            
+            matrices.insert(name, wrapper);
+            updateMatrixList();
+            showInfo("МАТРИЦА СОЗДАНА");
+        } else {
+            delete wrapper;
         }
-    } else {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                double val = QInputDialog::getDouble(this, "ВВОД ЭЛЕМЕНТА", QString("ЭЛЕМЕНТ [%1][%2]:").arg(i).arg(j));
-                mat->set(i, j, val);
-            }
-        }
+    } catch (const std::exception& e) {
+        showError(e.what());
     }
-    
-    matrices[name] = mat;
-    updateMatrixList();
-    showInfo("МАТРИЦА СОЗДАНА");
 }
 
 void MainWindowMatrix::onDeleteMatrix() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    int reply = QMessageBox::question(this, "ПОДТВЕРЖДЕНИЕ", QString("УДАЛИТЬ МАТРИЦУ '%1'?").arg(currentName), QMessageBox::Yes | QMessageBox::No);
+    int reply = QMessageBox::question(this, "ПОДТВЕРЖДЕНИЕ", 
+        QString("УДАЛИТЬ МАТРИЦУ '%1'?").arg(currentName), 
+        QMessageBox::Yes | QMessageBox::No);
     
     if (reply == QMessageBox::Yes) {
         delete currentMatrix;
@@ -429,50 +786,158 @@ void MainWindowMatrix::onDeleteMatrix() {
         textDisplay->clear();
         labelCurrent->setText("ТЕКУЩАЯ МАТРИЦА: НЕ ВЫБРАНА");
         labelNormResult->setText("НОРМЫ: НЕ ВЫЧИСЛЕНЫ");
+        showInfo("МАТРИЦА УДАЛЕНА");
     }
 }
 
 void MainWindowMatrix::onRefreshList() {
     updateMatrixList();
-    if (currentMatrix) {
+    if (currentMatrix && currentMatrix->isValid()) {
         updateCurrentDisplay();
     }
 }
 
 void MainWindowMatrix::onMatrixClicked(QListWidgetItem *item) {
     QString name = item->text();
-    if (matrices.contains(name)) {
+    auto it = matrices.find(name);
+    if (it != matrices.end()) {
         currentName = name;
-        currentMatrix = matrices[name];
+        currentMatrix = it.value();
         labelCurrent->setText(QString("ТЕКУЩАЯ МАТРИЦА: %1").arg(name));
         updateCurrentDisplay();
     }
 }
 
 void MainWindowMatrix::onEditElement() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    bool ok1, ok2, ok3;
+    // Проверяем, является ли матрица треугольной
+    bool isTriangular = false;
+    bool isUpper = false;
+    int size = currentMatrix->getRows();
+    
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (auto* tri = dynamic_cast<TriangleMatrix<int>*>(mat)) {
+            isTriangular = true;
+            isUpper = (tri->getType() == MatrixType::Upper);
+        }
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (auto* tri = dynamic_cast<TriangleMatrix<double>*>(mat)) {
+            isTriangular = true;
+            isUpper = (tri->getType() == MatrixType::Upper);
+        }
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (auto* tri = dynamic_cast<TriangleMatrix<std::complex<double>>*>(mat)) {
+            isTriangular = true;
+            isUpper = (tri->getType() == MatrixType::Upper);
+        }
+    }
+    
+    int rows = currentMatrix->getRows();
+    int cols = currentMatrix->getCols();
+    
+    bool ok1, ok2;
     int i = QInputDialog::getInt(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
-        "ВВЕДИТЕ НОМЕР СТРОКИ (I):", 0, 0, currentMatrix->getRows() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР СТРОКИ (I):", 0, 0, rows - 1, 1, &ok1);
     if (!ok1) return;
     
     int j = QInputDialog::getInt(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
-        "ВВЕДИТЕ НОМЕР СТОЛБЦА (J):", 0, 0, currentMatrix->getCols() - 1, 1, &ok2);
+        "ВВЕДИТЕ НОМЕР СТОЛБЦА (J):", 0, 0, cols - 1, 1, &ok2);
     if (!ok2) return;
     
-    double value = QInputDialog::getDouble(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
-        QString("ВВЕДИТЕ НОВОЕ ЗНАЧЕНИЕ ДЛЯ ЭЛЕМЕНТА [%1][%2]:").arg(i).arg(j), 
-        currentMatrix->get(i, j), -1000000, 1000000, 2, &ok3);
-    if (!ok3) return;
+    // Для треугольной матрицы проверяем доступность позиции
+    if (isTriangular) {
+        bool isInTriangle = isUpper ? (i <= j) : (i >= j);
+        
+        if (!isInTriangle) {
+            QMessageBox::warning(this, "НЕДОСТУПНАЯ ПОЗИЦИЯ", 
+                QString("ЭЛЕМЕНТ [%1][%2] НАХОДИТСЯ ВНЕ ТРЕУГОЛЬНОЙ ОБЛАСТИ.\n"
+                        "ЭТА ПОЗИЦИЯ ВСЕГДА РАВНА 0 И НЕ МОЖЕТ БЫТЬ ИЗМЕНЕНА.")
+                        .arg(i).arg(j));
+            return;
+        }
+    }
+    
+    // Получаем текущее значение
+    QString currentStr;
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (mat) {
+            try {
+                currentStr = valueToString(mat->get(i, j));
+            } catch (const std::exception& e) {
+                currentStr = "0";
+            }
+        }
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (mat) {
+            try {
+                currentStr = valueToString(mat->get(i, j));
+            } catch (const std::exception& e) {
+                currentStr = "0";
+            }
+        }
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (mat) {
+            try {
+                currentStr = valueToString(mat->get(i, j));
+            } catch (const std::exception& e) {
+                currentStr = "(0,0)";
+            }
+        }
+    }
+    
+    QString newStr = QInputDialog::getText(this, "ИЗМЕНИТЬ ЭЛЕМЕНТ", 
+        QString("ВВЕДИТЕ НОВОЕ ЗНАЧЕНИЕ ДЛЯ ЭЛЕМЕНТА [%1][%2]:").arg(i).arg(j),
+        QLineEdit::Normal, currentStr);
+    if (newStr.isEmpty()) return;
     
     try {
-        currentMatrix->set(i, j, value);
-        updateCurrentDisplay();
-        showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН НА %3").arg(i).arg(j).arg(value));
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) {
+                int newValue = parseValue<int>(newStr);
+                mat->set(i, j, newValue);
+                updateCurrentDisplay();
+                showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+            }
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) {
+                double newValue = parseValue<double>(newStr);
+                mat->set(i, j, newValue);
+                updateCurrentDisplay();
+                showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+            }
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) {
+                auto newValue = parseValue<std::complex<double>>(newStr);
+                mat->set(i, j, newValue);
+                updateCurrentDisplay();
+                showInfo(QString("ЭЛЕМЕНТ [%1][%2] ИЗМЕНЁН").arg(i).arg(j));
+            }
+        }
+    } catch (const IndexOutOFBoundsException& e) {
+        // Специальная обработка для треугольной матрицы
+        QString errorMsg = e.what();
+        if (errorMsg.contains("Cannot set non-zero value outside triangular matrix")) {
+            QMessageBox::warning(this, "ОШИБКА", 
+                QString("НЕЛЬЗЯ УСТАНОВИТЬ НЕНУЛЕВОЕ ЗНАЧЕНИЕ ВНЕ ТРЕУГОЛЬНОЙ ОБЛАСТИ.\n"
+                        "ПОЗИЦИЯ [%1][%2] ВСЕГДА ДОЛЖНА БЫТЬ РАВНА 0.\n"
+                        "ПОЖАЛУЙСТА, ВВЕДИТЕ 0 ИЛИ ВЫБЕРИТЕ ДРУГУЮ ПОЗИЦИЮ.")
+                        .arg(i).arg(j));
+        } else {
+            showError(e.what());
+        }
     } catch (const std::exception& e) {
         showError(e.what());
     }
@@ -483,7 +948,7 @@ void MainWindowMatrix::onShowMatrix() {
 }
 
 void MainWindowMatrix::onAdd() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
@@ -497,20 +962,34 @@ void MainWindowMatrix::onAdd() {
     }
     
     bool ok;
-    QString otherName = QInputDialog::getItem(this, "ВЫБОР МАТРИЦЫ", "ВЫБЕРИТЕ МАТРИЦУ ДЛЯ СЛОЖЕНИЯ:", names, 0, false, &ok);
+    QString otherName = QInputDialog::getItem(this, "ВЫБОР МАТРИЦЫ", 
+        "ВЫБЕРИТЕ МАТРИЦУ ДЛЯ СЛОЖЕНИЯ:", names, 0, false, &ok);
     if (!ok) return;
     
+    MatrixWrapper* other = matrices[otherName];
+    
+    // Проверяем совместимость типов
+    if (currentMatrix->dataType != other->dataType) {
+        showError("НЕЛЬЗЯ СКЛАДЫВАТЬ МАТРИЦЫ РАЗНЫХ ТИПОВ ДАННЫХ");
+        return;
+    }
+    
     try {
-        Matrix<double>* result = currentMatrix->add(*matrices[otherName]);
-        QString newName = QInputDialog::getText(this, "СОХРАНИТЬ РЕЗУЛЬТАТ", "ВВЕДИТЕ ИМЯ НОВОЙ МАТРИЦЫ:");
+        MatrixWrapper* result = addMatrices(currentMatrix, other);
         
-        if (!newName.isEmpty() && !matrices.contains(newName)) {
-            matrices[newName] = result;
-            updateMatrixList();
-            showInfo("РЕЗУЛЬТАТ СЛОЖЕНИЯ СОХРАНЁН");
+        if (result && result->isValid()) {
+            QString newName = QInputDialog::getText(this, "СОХРАНИТЬ РЕЗУЛЬТАТ", 
+                "ВВЕДИТЕ ИМЯ НОВОЙ МАТРИЦЫ:");
+            
+            if (!newName.isEmpty() && !matrices.contains(newName)) {
+                matrices.insert(newName, result);
+                updateMatrixList();
+                showInfo("РЕЗУЛЬТАТ СЛОЖЕНИЯ СОХРАНЁН");
+            } else {
+                delete result;
+            }
         } else {
             delete result;
-            showError("НЕВАЛИДНОЕ ИМЯ");
         }
     } catch (const std::exception& e) {
         showError(e.what());
@@ -518,28 +997,31 @@ void MainWindowMatrix::onAdd() {
 }
 
 void MainWindowMatrix::onMultiplyByScalar() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    bool ok;
-    double scalar = QInputDialog::getDouble(this, "УМНОЖИТЬ НА СКАЛЯР", 
-        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):", 1.0, -1000000, 1000000, 2, &ok);
-    if (!ok) return;
+    QString scalarStr = QInputDialog::getText(this, "УМНОЖИТЬ НА СКАЛЯР", 
+        "ВВЕДИТЕ СКАЛЯР:");
+    if (scalarStr.isEmpty()) return;
     
     try {
-        Matrix<double>* result = currentMatrix->multiplyByScalar(scalar);
-        QString newName = QInputDialog::getText(this, "СОХРАНИТЬ РЕЗУЛЬТАТ", 
-            "ВВЕДИТЕ ИМЯ НОВОЙ МАТРИЦЫ:");
+        MatrixWrapper* result = multiplyByScalar(currentMatrix, scalarStr);
         
-        if (!newName.isEmpty() && !matrices.contains(newName)) {
-            matrices[newName] = result;
-            updateMatrixList();
-            showInfo("РЕЗУЛЬТАТ УМНОЖЕНИЯ СОХРАНЁН");
+        if (result && result->isValid()) {
+            QString newName = QInputDialog::getText(this, "СОХРАНИТЬ РЕЗУЛЬТАТ", 
+                "ВВЕДИТЕ ИМЯ НОВОЙ МАТРИЦЫ:");
+            
+            if (!newName.isEmpty() && !matrices.contains(newName)) {
+                matrices.insert(newName, result);
+                updateMatrixList();
+                showInfo("РЕЗУЛЬТАТ УМНОЖЕНИЯ СОХРАНЁН");
+            } else {
+                delete result;
+            }
         } else {
             delete result;
-            showError("НЕВАЛИДНОЕ ИМЯ");
         }
     } catch (const std::exception& e) {
         showError(e.what());
@@ -547,67 +1029,101 @@ void MainWindowMatrix::onMultiplyByScalar() {
 }
 
 void MainWindowMatrix::onNormL1() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    try {
-        double norm = currentMatrix->normL1();
-        labelNormResult->setText(QString("L1 НОРМА = %1").arg(norm));
-        showInfo(QString("L1 НОРМА = %1").arg(norm));
-    } catch (const std::exception& e) {
-        showError(e.what());
+    double norm = 0;
+    
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL1();
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL1();
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL1();
     }
+    
+    labelNormResult->setText(QString("L1 НОРМА = %1").arg(norm, 0, 'g', 10));
+    showInfo(QString("L1 НОРМА = %1").arg(norm, 0, 'g', 10));
 }
 
 void MainWindowMatrix::onNormInf() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    try {
-        double norm = currentMatrix->normInf();
-        labelNormResult->setText(QString("L∞ НОРМА = %1").arg(norm));
-        showInfo(QString("L∞ НОРМА = %1").arg(norm));
-    } catch (const std::exception& e) {
-        showError(e.what());
+    double norm = 0;
+    
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normInf();
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normInf();
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normInf();
     }
+    
+    labelNormResult->setText(QString("L∞ НОРМА = %1").arg(norm, 0, 'g', 10));
+    showInfo(QString("L∞ НОРМА = %1").arg(norm, 0, 'g', 10));
 }
 
 void MainWindowMatrix::onNormL2() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    try {
-        double norm = currentMatrix->normL2();
-        labelNormResult->setText(QString("L2 НОРМА (ФРОБЕНИУСА) = %1").arg(norm));
-        showInfo(QString("L2 НОРМА = %1").arg(norm));
-    } catch (const std::exception& e) {
-        showError(e.what());
+    double norm = 0;
+    
+    if (currentMatrix->dataType == DataType::Int) {
+        auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL2();
+    } else if (currentMatrix->dataType == DataType::Double) {
+        auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL2();
+    } else {
+        auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+        if (mat) norm = mat->normL2();
     }
+    
+    labelNormResult->setText(QString("L2 НОРМА (ФРОБЕНИУСА) = %1").arg(norm, 0, 'g', 10));
+    showInfo(QString("L2 НОРМА = %1").arg(norm, 0, 'g', 10));
 }
 
 void MainWindowMatrix::onSwapRows() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
+    int rows = currentMatrix->getRows();
     bool ok1, ok2;
     int i = QInputDialog::getInt(this, "ПОМЕНЯТЬ СТРОКИ", 
-        "ВВЕДИТЕ НОМЕР ПЕРВОЙ СТРОКИ:", 0, 0, currentMatrix->getRows() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР ПЕРВОЙ СТРОКИ:", 0, 0, rows - 1, 1, &ok1);
     if (!ok1) return;
     
     int j = QInputDialog::getInt(this, "ПОМЕНЯТЬ СТРОКИ", 
-        "ВВЕДИТЕ НОМЕР ВТОРОЙ СТРОКИ:", 0, 0, currentMatrix->getRows() - 1, 1, &ok2);
+        "ВВЕДИТЕ НОМЕР ВТОРОЙ СТРОКИ:", 0, 0, rows - 1, 1, &ok2);
     if (!ok2) return;
     
     try {
-        currentMatrix->swapRows(i, j);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapRows(i, j);
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapRows(i, j);
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapRows(i, j);
+        }
         updateCurrentDisplay();
         showInfo(QString("СТРОКИ %1 И %2 ПОМЕНЯНЫ МЕСТАМИ").arg(i).arg(j));
     } catch (const std::exception& e) {
@@ -616,22 +1132,32 @@ void MainWindowMatrix::onSwapRows() {
 }
 
 void MainWindowMatrix::onSwapCols() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
+    int cols = currentMatrix->getCols();
     bool ok1, ok2;
     int i = QInputDialog::getInt(this, "ПОМЕНЯТЬ СТОЛБЦЫ", 
-        "ВВЕДИТЕ НОМЕР ПЕРВОГО СТОЛБЦА:", 0, 0, currentMatrix->getCols() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР ПЕРВОГО СТОЛБЦА:", 0, 0, cols - 1, 1, &ok1);
     if (!ok1) return;
     
     int j = QInputDialog::getInt(this, "ПОМЕНЯТЬ СТОЛБЦЫ", 
-        "ВВЕДИТЕ НОМЕР ВТОРОГО СТОЛБЦА:", 0, 0, currentMatrix->getCols() - 1, 1, &ok2);
+        "ВВЕДИТЕ НОМЕР ВТОРОГО СТОЛБЦА:", 0, 0, cols - 1, 1, &ok2);
     if (!ok2) return;
     
     try {
-        currentMatrix->swapCols(i, j);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapCols(i, j);
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapCols(i, j);
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) mat->swapCols(i, j);
+        }
         updateCurrentDisplay();
         showInfo(QString("СТОЛБЦЫ %1 И %2 ПОМЕНЯНЫ МЕСТАМИ").arg(i).arg(j));
     } catch (const std::exception& e) {
@@ -640,106 +1166,180 @@ void MainWindowMatrix::onSwapCols() {
 }
 
 void MainWindowMatrix::onMultiplyRow() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
+    int rows = currentMatrix->getRows();
     bool ok1, ok2;
     int i = QInputDialog::getInt(this, "УМНОЖИТЬ СТРОКУ", 
-        "ВВЕДИТЕ НОМЕР СТРОКИ:", 0, 0, currentMatrix->getRows() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР СТРОКИ:", 0, 0, rows - 1, 1, &ok1);
     if (!ok1) return;
     
-    double scalar = QInputDialog::getDouble(this, "УМНОЖИТЬ СТРОКУ", 
-        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):", 1.0, -1000000, 1000000, 2, &ok2);
-    if (!ok2) return;
+    QString scalarStr = QInputDialog::getText(this, "УМНОЖИТЬ СТРОКУ", 
+        "ВВЕДИТЕ МНОЖИТЕЛЬ:");
+    if (scalarStr.isEmpty()) return;
     
     try {
-        currentMatrix->multiplyRow(i, scalar);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) {
+                int scalar = parseValue<int>(scalarStr);
+                mat->multiplyRow(i, scalar);
+            }
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) {
+                double scalar = parseValue<double>(scalarStr);
+                mat->multiplyRow(i, scalar);
+            }
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) {
+                auto scalar = parseValue<std::complex<double>>(scalarStr);
+                mat->multiplyRow(i, scalar);
+            }
+        }
         updateCurrentDisplay();
-        showInfo(QString("СТРОКА %1 УМНОЖЕНА НА %2").arg(i).arg(scalar));
+        showInfo(QString("СТРОКА %1 УМНОЖЕНА").arg(i));
     } catch (const std::exception& e) {
         showError(e.what());
     }
 }
 
 void MainWindowMatrix::onMultiplyCol() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
+    int cols = currentMatrix->getCols();
     bool ok1, ok2;
     int j = QInputDialog::getInt(this, "УМНОЖИТЬ СТОЛБЕЦ", 
-        "ВВЕДИТЕ НОМЕР СТОЛБЦА:", 0, 0, currentMatrix->getCols() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР СТОЛБЦА:", 0, 0, cols - 1, 1, &ok1);
     if (!ok1) return;
     
-    double scalar = QInputDialog::getDouble(this, "УМНОЖИТЬ СТОЛБЕЦ", 
-        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):", 1.0, -1000000, 1000000, 2, &ok2);
-    if (!ok2) return;
+    QString scalarStr = QInputDialog::getText(this, "УМНОЖИТЬ СТОЛБЕЦ", 
+        "ВВЕДИТЕ МНОЖИТЕЛЬ:");
+    if (scalarStr.isEmpty()) return;
     
     try {
-        currentMatrix->multiplyCol(j, scalar);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) {
+                int scalar = parseValue<int>(scalarStr);
+                mat->multiplyCol(j, scalar);
+            }
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) {
+                double scalar = parseValue<double>(scalarStr);
+                mat->multiplyCol(j, scalar);
+            }
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) {
+                auto scalar = parseValue<std::complex<double>>(scalarStr);
+                mat->multiplyCol(j, scalar);
+            }
+        }
         updateCurrentDisplay();
-        showInfo(QString("СТОЛБЕЦ %1 УМНОЖЕН НА %2").arg(j).arg(scalar));
+        showInfo(QString("СТОЛБЕЦ %1 УМНОЖЕН").arg(j));
     } catch (const std::exception& e) {
         showError(e.what());
     }
 }
 
 void MainWindowMatrix::onAddRowToRow() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    bool ok1, ok2, ok3;
+    int rows = currentMatrix->getRows();
+    bool ok1, ok2;
     int source = QInputDialog::getInt(this, "ПРИБАВИТЬ СТРОКУ", 
-        "ВВЕДИТЕ НОМЕР СТРОКИ-ИСТОЧНИКА:", 0, 0, currentMatrix->getRows() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР СТРОКИ-ИСТОЧНИКА:", 0, 0, rows - 1, 1, &ok1);
     if (!ok1) return;
     
     int target = QInputDialog::getInt(this, "ПРИБАВИТЬ СТРОКУ", 
-        "ВВЕДИТЕ НОМЕР СТРОКИ-ПРИЁМНИКА:", 0, 0, currentMatrix->getRows() - 1, 1, &ok2);
+        "ВВЕДИТЕ НОМЕР СТРОКИ-ПРИЁМНИКА:", 0, 0, rows - 1, 1, &ok2);
     if (!ok2) return;
     
-    double scalar = QInputDialog::getDouble(this, "ПРИБАВИТЬ СТРОКУ", 
-        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):\n(СТРОКА_ПРИЁМНИК = СТРОКА_ПРИЁМНИК + СКАЛЯР * СТРОКА_ИСТОЧНИК)", 
-        1.0, -1000000, 1000000, 2, &ok3);
-    if (!ok3) return;
+    QString scalarStr = QInputDialog::getText(this, "ПРИБАВИТЬ СТРОКУ", 
+        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):");
+    if (scalarStr.isEmpty()) return;
     
     try {
-        currentMatrix->addRowToRow(source, target, scalar);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) {
+                int scalar = parseValue<int>(scalarStr);
+                mat->addRowToRow(source, target, scalar);
+            }
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) {
+                double scalar = parseValue<double>(scalarStr);
+                mat->addRowToRow(source, target, scalar);
+            }
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) {
+                auto scalar = parseValue<std::complex<double>>(scalarStr);
+                mat->addRowToRow(source, target, scalar);
+            }
+        }
         updateCurrentDisplay();
-        showInfo(QString("СТРОКА %1 = СТРОКА %1 + %2 * СТРОКА %3").arg(target).arg(scalar).arg(source));
+        showInfo(QString("СТРОКА %1 = СТРОКА %1 + СКАЛЯР * СТРОКА %2").arg(target).arg(source));
     } catch (const std::exception& e) {
         showError(e.what());
     }
 }
 
 void MainWindowMatrix::onAddColToCol() {
-    if (!currentMatrix) {
+    if (!currentMatrix || !currentMatrix->isValid()) {
         showError("НЕТ ВЫБРАННОЙ МАТРИЦЫ");
         return;
     }
     
-    bool ok1, ok2, ok3;
+    int cols = currentMatrix->getCols();
+    bool ok1, ok2;
     int source = QInputDialog::getInt(this, "ПРИБАВИТЬ СТОЛБЕЦ", 
-        "ВВЕДИТЕ НОМЕР СТОЛБЦА-ИСТОЧНИКА:", 0, 0, currentMatrix->getCols() - 1, 1, &ok1);
+        "ВВЕДИТЕ НОМЕР СТОЛБЦА-ИСТОЧНИКА:", 0, 0, cols - 1, 1, &ok1);
     if (!ok1) return;
     
     int target = QInputDialog::getInt(this, "ПРИБАВИТЬ СТОЛБЕЦ", 
-        "ВВЕДИТЕ НОМЕР СТОЛБЦА-ПРИЁМНИКА:", 0, 0, currentMatrix->getCols() - 1, 1, &ok2);
+        "ВВЕДИТЕ НОМЕР СТОЛБЦА-ПРИЁМНИКА:", 0, 0, cols - 1, 1, &ok2);
     if (!ok2) return;
     
-    double scalar = QInputDialog::getDouble(this, "ПРИБАВИТЬ СТОЛБЕЦ", 
-        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):\n(СТОЛБЕЦ_ПРИЁМНИК = СТОЛБЕЦ_ПРИЁМНИК + СКАЛЯР * СТОЛБЕЦ_ИСТОЧНИК)", 
-        1.0, -1000000, 1000000, 2, &ok3);
-    if (!ok3) return;
+    QString scalarStr = QInputDialog::getText(this, "ПРИБАВИТЬ СТОЛБЕЦ", 
+        "ВВЕДИТЕ МНОЖИТЕЛЬ (СКАЛЯР):");
+    if (scalarStr.isEmpty()) return;
     
     try {
-        currentMatrix->addColToCol(source, target, scalar);
+        if (currentMatrix->dataType == DataType::Int) {
+            auto* mat = std::get<std::unique_ptr<Matrix<int>>>(currentMatrix->matrix).get();
+            if (mat) {
+                int scalar = parseValue<int>(scalarStr);
+                mat->addColToCol(source, target, scalar);
+            }
+        } else if (currentMatrix->dataType == DataType::Double) {
+            auto* mat = std::get<std::unique_ptr<Matrix<double>>>(currentMatrix->matrix).get();
+            if (mat) {
+                double scalar = parseValue<double>(scalarStr);
+                mat->addColToCol(source, target, scalar);
+            }
+        } else {
+            auto* mat = std::get<std::unique_ptr<Matrix<std::complex<double>>>>(currentMatrix->matrix).get();
+            if (mat) {
+                auto scalar = parseValue<std::complex<double>>(scalarStr);
+                mat->addColToCol(source, target, scalar);
+            }
+        }
         updateCurrentDisplay();
-        showInfo(QString("СТОЛБЕЦ %1 = СТОЛБЕЦ %1 + %2 * СТОЛБЕЦ %3").arg(target).arg(scalar).arg(source));
+        showInfo(QString("СТОЛБЕЦ %1 = СТОЛБЕЦ %1 + СКАЛЯР * СТОЛБЕЦ %2").arg(target).arg(source));
     } catch (const std::exception& e) {
         showError(e.what());
     }

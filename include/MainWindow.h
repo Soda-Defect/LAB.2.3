@@ -11,7 +11,7 @@
 #include <QApplication>
 #include <QDebug>
 
-int  run(int argc, char *argv[]){
+int run(int argc, char *argv[]){
     QApplication a(argc, argv);
     QStringList types = {"Целые числа", "Вещественные числа", "Символы", "Строки", "Матрицы", "Тесты"};
     bool ok;
@@ -38,9 +38,9 @@ int  run(int argc, char *argv[]){
         w.show();
         return a.exec();
     } else if (choice == "Матрицы") {
-    MainWindowMatrix w;
-    w.show();
-    return a.exec();
+        MainWindowMatrix w;  
+        w.show();
+        return a.exec();
     } else if (choice == "Тесты") {
         TestRunnerGUI w;
         QString results = w.runAllTests();
@@ -49,4 +49,5 @@ int  run(int argc, char *argv[]){
     }
     return 1;
 }
+
 #endif // MAINWINDOW_H
