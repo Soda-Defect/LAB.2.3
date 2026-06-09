@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20) 
-project(LAB2 LANGUAGES CXX)
+project(LAB3 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -13,14 +13,14 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
 
 qt_standard_project_setup()
 
-qt_add_executable(LAB2
+qt_add_executable(LAB3
     WIN32 MACOSX_BUNDLE
     src/main.cpp
     src/test.cpp
     src/WindowMatrix.cpp
 )
 
-target_sources(LAB2 PRIVATE
+target_sources(LAB3 PRIVATE
     include/MainWindow.h
     include/WindowInt.h
     include/Sequence.h
@@ -38,7 +38,7 @@ target_sources(LAB2 PRIVATE
     include/WindowMatrix.h
 )
 
-target_link_libraries(LAB2
+target_link_libraries(LAB3
     PRIVATE
         Qt::Core
         Qt::Widgets
@@ -46,14 +46,14 @@ target_link_libraries(LAB2
 
 include(GNUInstallDirs)
 
-install(TARGETS LAB2
+install(TARGETS LAB3
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 qt_generate_deploy_app_script(
-    TARGET LAB2
+    TARGET LAB3
     OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
